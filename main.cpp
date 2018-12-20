@@ -16,14 +16,11 @@
 #include "IfCommand.h"
 #include "EqualCommand.h"
 
-int x = 8;
-
 using namespace std;
 
 vector<string> lexer(string &toSeparate);
 
 unsigned long findMinIndexToSeparate(const string &str);
-
 void addSpaces(string &toSeparate);
 
 void parse(vector<string> &separated);
@@ -89,8 +86,8 @@ void parse(vector<string> &separated) {
     dataVars = new DataVars();
     DataBinds *dataBinds;
     dataBinds = new DataBinds();
-    stringsToCommands.insert(
-            pair<string, Command *>("openDataServer", new OpenDataServerCommand(dataCommands, dataBinds, dataVars)));
+    stringsToCommands.insert(pair<string, Command *>("openDataServer", new OpenDataServerCommand(dataCommands,
+                                                                                                 dataBinds,dataVars)));
     stringsToCommands.insert(pair<string, Command *>("connect", new ConnectCommand(dataCommands)));
     stringsToCommands.insert(pair<string, Command *>("var", new VarCommand(dataCommands, dataVars)));
     stringsToCommands.insert(pair<string, Command *>("bind", new BindCommand(dataCommands, dataBinds)));
@@ -120,24 +117,26 @@ unsigned long findMinIndexToSeparate(const string &str) {
 }
 
 void addSpaces(string &toSeparate) {
-    short opLen = 2;
-    vector<unsigned long> tmpVec1 = {toSeparate.find("=="), toSeparate.find("!="), toSeparate.find(">="), toSeparate
-            .find("<="), toSeparate.find("!=")};
+    short opLen=2;
+    vector<unsigned long> tmpVec1 = {toSeparate.find("=="), toSeparate.find("!="),toSeparate.find(">="),toSeparate
+            .find("<="),toSeparate.find("!=")};
     auto it1 = min_element(tmpVec1.begin(), tmpVec1.end());
     unsigned long index = *(it1);
-    if (index == string::npos) {// ==,!=,>=,<=,!= wasn't found - search =,<,>
-        vector<unsigned long> tmpVec2 = {toSeparate.find('='), toSeparate.find('<'), toSeparate.find('>')};
+    if(index==string::npos){// ==,!=,>=,<=,!= wasn't found - search =,<,>
+        vector<unsigned long> tmpVec2 = {toSeparate.find('='), toSeparate.find('<'),toSeparate.find('>'),toSeparate
+                .find('{'),toSeparate.find('}')};
         auto it2 = min_element(tmpVec2.begin(), tmpVec2.end());
         index = *(it2);
-        opLen = 1;
+        opLen=1;
     }
 
-    if (index != string::npos) {
-        toSeparate.insert(index, " ");
-        if (opLen == 2) {
-            toSeparate.insert(index + 3, " ");
-        } else {
-            toSeparate.insert(index + 2, " ");
+    if(index!=string::npos){
+        toSeparate.insert(index," ");
+        if(opLen==2){
+            toSeparate.insert(index+3," ");
+        }
+        else {
+            toSeparate.insert(index+2," ");
         }
     }
 
