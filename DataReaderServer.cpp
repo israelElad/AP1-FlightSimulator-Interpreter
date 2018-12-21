@@ -47,6 +47,30 @@ void DataReaderServer::openServer() {
         perror("ERROR on accept");
         return;
     }
+    // Create a vector arranged in order of variables in the XML file
+    vector<string> xmlVariables = {"/instrumentation/airspeed-indicator/indicated-speed-kt",
+                                   "/instrumentation/altimeter/indicated-altitude-ft",
+                                   "/instrumentation/altimeter/pressure-alt-ft",
+                                   "/instrumentation/attitude-indicator/indicated-pitch-deg",
+                                   "/instrumentation/attitude-indicator/indicated-roll-deg",
+                                   "/instrumentation/attitude-indicator/internal-pitch-deg",
+                                   "/instrumentation/attitude-indicator/internal-roll-deg",
+                                   "/instrumentation/encoder/indicated-altitude-ft",
+                                   "/instrumentation/encoder/pressure-alt-ft",
+                                   "/instrumentation/gps/indicated-altitude-ft",
+                                   "/instrumentation/gps/indicated-ground-speed-kt",
+                                   "/instrumentation/gps/indicated-vertical-speed",
+                                   "/instrumentation/heading-indicator/indicated-heading-deg",
+                                   "/instrumentation/magnetic-compass/indicated-heading-deg",
+                                   "/instrumentation/slip-skid-ball/indicated-slip-skid",
+                                   "/instrumentation/turn-indicator/indicated-turn-rate",
+                                   "/instrumentation/vertical-speed-indicator/indicated-speed-fpm",
+                                   "/controls/flight/aileron",
+                                   "/controls/flight/elevator",
+                                   "/controls/flight/rudder",
+                                   "/controls/flight/flaps",
+                                   "/controls/engines/engine/throttle",
+                                   "/engines/engine/rpm"};
     while (true) {
         // If connection is established then start communicating
         bzero(buffer, 1024);
@@ -56,7 +80,7 @@ void DataReaderServer::openServer() {
             return;
         }
 
-        printf("Here is the message: %s\n",buffer);
+        printf("Here is the message: %s\n", buffer);
 
         // put the data in vector
         string dataFromSimulator = buffer;
@@ -67,31 +91,6 @@ void DataReaderServer::openServer() {
         while (ss >> temp) {
             dataValues.push_back(temp);
         }
-
-        // Create a vector arranged in order of variables in the XML file
-        vector<string> xmlVariables = {"/instrumentation/airspeed-indicator/indicated-speed-kt",
-                                       "/instrumentation/altimeter/indicated-altitude-ft",
-                                       "/instrumentation/altimeter/pressure-alt-ft",
-                                       "/instrumentation/attitude-indicator/indicated-pitch-deg",
-                                       "/instrumentation/attitude-indicator/indicated-roll-deg",
-                                       "/instrumentation/attitude-indicator/internal-pitch-deg",
-                                       "/instrumentation/attitude-indicator/internal-roll-deg",
-                                       "/instrumentation/encoder/indicated-altitude-ft",
-                                       "/instrumentation/encoder/pressure-alt-ft",
-                                       "/instrumentation/gps/indicated-altitude-ft",
-                                       "/instrumentation/gps/indicated-ground-speed-kt",
-                                       "/instrumentation/gps/indicated-vertical-speed",
-                                       "/instrumentation/heading-indicator/indicated-heading-deg",
-                                       "/instrumentation/magnetic-compass/indicated-heading-deg",
-                                       "/instrumentation/slip-skid-ball/indicated-slip-skid",
-                                       "/instrumentation/turn-indicator/indicated-turn-rate",
-                                       "/instrumentation/vertical-speed-indicator/indicated-speed-fpm",
-                                       "/controls/flight/aileron",
-                                       "/controls/flight/elevator",
-                                       "/controls/flight/rudder",
-                                       "/controls/flight/flaps",
-                                       "/controls/engines/engine/throttle",
-                                       "/engines/engine/rpm"};
         // Replaces any vector name found on the Bind map in the name of Var
         auto itXml1 = xmlVariables.begin();
         while (itXml1 != xmlVariables.end()) {

@@ -139,5 +139,4 @@ void addSpaces(string &toSeparate) {
             toSeparate.insert(index+2," ");
         }
     }
-
 }
