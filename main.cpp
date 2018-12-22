@@ -95,7 +95,7 @@ void parse(vector<string> &separated) {
     stringsToCommands.insert(pair<string, Command *>("while", new WhileCommand(dataCommands)));
     stringsToCommands.insert(pair<string, Command *>("if", new IfCommand(dataCommands)));
     stringsToCommands.insert(pair<string, Command *>("print", new PrintCommand(dataCommands, dataVars)));
-    stringsToCommands.insert(pair<string, Command *>("=", new EqualCommand(dataCommands)));
+    stringsToCommands.insert(pair<string, Command *>("=", new EqualCommand(dataCommands, dataVars)));
     auto it1 = separated.begin();
     while (it1 != separated.end()) {
         auto it2 = stringsToCommands.find(*it1);
