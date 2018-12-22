@@ -13,6 +13,7 @@ DataReaderServer::DataReaderServer(int &port, int &perSec, DataBinds *dataBinds,
     this->perSec = perSec;
     this->port = port;
     this->dataBinds = dataBinds;
+    this->dataVars = dataVars;
 }
 
 void DataReaderServer::openServer() {
@@ -39,7 +40,7 @@ void DataReaderServer::openServer() {
 
     /* Now start listening for the clients, here process will go in sleep mode and
      * will wait for the incoming connection */
-    listen(socketFd, this->perSec);
+    listen(socketFd, 5);
     clientLen = sizeof(cli_addr);
     // Accept actual connection from the client
     newSockFd = accept(socketFd, (struct sockaddr *) &cli_addr, (socklen_t *) &clientLen);

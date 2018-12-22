@@ -5,43 +5,41 @@
 #include <cstring>
 #include <unistd.h>
 #include "DataWriterClient.h"
+#include "DataVars.h"
+#include "DataBinds.h"
 
-DataWriterClient::DataWriterClient(string &ip, int &port) {
+DataWriterClient::DataWriterClient(string &ip, int &port, DataBinds *dataBinds, DataVars *dataVars) {
     this->ip = ip;
     this->port = port;
+    this->dataBinds = dataBinds;
+    this->dataVars = dataVars;
 }
 
 void DataWriterClient::openClient() {
     int sockfd, portno, n;
     struct sockaddr_in serv_addr{};
     struct hostent *server;
-
     char buffer[1024];
-
     portno = this->port;
 
     // Create a socket point
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
-
     if (sockfd < 0) {
         perror("ERROR opening socket");
         return;
     }
-
-    server = gethostbyname((this->ip).c_str());
-
+    server = gethostbyname((this->ip).c_str()); //todo: ip
     if (server == nullptr) {
-        fprintf(stderr,"ERROR, no such host\n");
+        fprintf(stderr, "ERROR, no such host\n");
         return;
     }
-
     bzero((char *) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
-    bcopy(server->h_addr, (char *)&serv_addr.sin_addr.s_addr, static_cast<size_t>(server->h_length));
+    bcopy(server->h_addr, (char *) &serv_addr.sin_addr.s_addr, static_cast<size_t>(server->h_length));
     serv_addr.sin_port = htons(static_cast<uint16_t>(portno));
 
     // Now connect to the server
-    if (connect(sockfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0) {
+    if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
         perror("ERROR connecting");
         return;
     }
@@ -49,14 +47,28 @@ void DataWriterClient::openClient() {
     while (true) {
         // Now ask for a message from the user, this message will be read by server
         bzero(buffer, 1024);
-        fgets(buffer, 1024, stdin);
+        // go over the vars we need to update the simulator in their value
+        auto itSymbolTable = this->dataVars->getSymbolTable().begin();
+        while (itSymbolTable != this->dataVars->getSymbolTable().end()) {
+            string varName = itSymbolTable->first;
+            double varValue = itSymbolTable->second;
+            // Find the name of the var according to how it appears in the simulator
+            auto itBinds = this->dataBinds->getVarToNameInSimulator().find(varName);
+            if (itBinds == this->dataBinds->getVarToNameInSimulator().end()) {
+                throw "There was no bind after creating the var";
+            }
+            // Create an appropriate set command
+            string setCommand = "set" + itBinds->second + to_string(varValue);
+            strcpy(buffer, setCommand.c_str());
 
-        // Send message to the server
-        n = static_cast<int>(write(sockfd, buffer, strlen(buffer)));
+            // Send message to the server
+            n = static_cast<int>(write(sockfd, buffer, strlen(buffer)));
 
-        if (n < 0) {
-            perror("ERROR writing to socket");
-            return;
+            if (n < 0) {
+                perror("ERROR writing to socket");
+                return;
+            }
+            itSymbolTable++;
         }
     }
 }

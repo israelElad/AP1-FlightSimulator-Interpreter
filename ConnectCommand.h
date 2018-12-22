@@ -10,13 +10,13 @@ using namespace std;
 class ConnectCommand : public Command {
 private:
     DataCommands* dataCommands;
+    DataBinds* dataBinds;
+    DataVars* dataVars;
     struct Params {
-        string ip;
-        int port;
         DataWriterClient* dataWriterClient;
     };
 public:
-    explicit ConnectCommand(DataCommands* dataCommands);
+    explicit ConnectCommand(DataCommands* dataCommands, DataBinds* dataBinds, DataVars* dataVars);
 
     virtual void doCommand();
 

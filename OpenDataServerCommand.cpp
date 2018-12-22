@@ -7,6 +7,7 @@
 OpenDataServerCommand::OpenDataServerCommand(DataCommands *dataCommands, DataBinds *dataBinds, DataVars* dataVars) {
     this->dataCommands = dataCommands;
     this->dataBinds = dataBinds;
+    this->dataVars = dataVars;
 }
 
 void OpenDataServerCommand::doCommand() {
