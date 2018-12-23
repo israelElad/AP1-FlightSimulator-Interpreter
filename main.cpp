@@ -73,6 +73,13 @@ vector<string> lexer(string &toSeparate) {
         }
         separated.push_back(sub);
         toSeparate.erase(0, index + 1);
+        //there is "=" and no "bind" - complex expression - take the remains of the line as a whole
+        if(sub=="="){
+            if(toSeparate.find("bind")==string::npos){
+                separated.push_back(toSeparate);
+                return separated;
+            }
+        }
         index = findMinIndexToSeparate(toSeparate);
     }
     separated.push_back(toSeparate);
@@ -125,7 +132,7 @@ void addSpaces(string &toSeparate) {
     unsigned long index = *(it1);
     if (index == string::npos) {// ==,!=,>=,<=,!= wasn't found - search =,<,>
         vector<unsigned long> tmpVec2 = {toSeparate.find('='), toSeparate.find('<'), toSeparate.find('>'), toSeparate
-                .find('{'), toSeparate.find('}')};
+                .find('{'), toSeparate.find('}'),toSeparate.find('('),toSeparate.find(')')};
         auto it2 = min_element(tmpVec2.begin(), tmpVec2.end());
         index = *(it2);
         opLen = 1;
