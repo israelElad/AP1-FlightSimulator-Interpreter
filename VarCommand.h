@@ -11,7 +11,6 @@ class VarCommand : public Command {
 private:
     DataCommands* dataCommands;
     DataVars* dataVars;
-    string name;
 public:
     explicit VarCommand(DataCommands* dataCommands, DataVars* dataVars);
 

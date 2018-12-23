@@ -1,0 +1,22 @@
+#ifndef AP3_SLEEPCOMMAND_H
+#define AP3_SLEEPCOMMAND_H
+
+
+#include "DataCommands.h"
+#include "VarCommand.h"
+#include "Command.h"
+
+class SleepCommand : Command {
+private:
+    DataCommands *dataCommands;
+    DataVars *dataVars;
+public:
+    explicit SleepCommand(DataCommands *dataCommands, DataVars *dataVars);
+
+    virtual void doCommand();
+
+    bool numIntegrityCheck(string &num);
+};
+
+
+#endif //AP3_SLEEPCOMMAND_H
