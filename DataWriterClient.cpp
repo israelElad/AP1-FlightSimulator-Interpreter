@@ -28,7 +28,7 @@ void DataWriterClient::openClient() {
         perror("ERROR opening socket");
         return;
     }
-    server = gethostbyname((this->ip).c_str()); //todo: ip
+    server = gethostbyname((this->ip).c_str());
     if (server == nullptr) {
         fprintf(stderr, "ERROR, no such host\n");
         return;
@@ -55,7 +55,8 @@ void DataWriterClient::openClient() {
             // Find the name of the var according to how it appears in the simulator
             auto itBinds = this->dataBinds->getVarToNameInSimulator().find(varName);
             if (itBinds == this->dataBinds->getVarToNameInSimulator().end()) {
-                throw "There was no bind after creating the var";
+                itSymbolTable++;
+                continue;
             }
             // Create an appropriate set command
             string setCommand = "set" + itBinds->second + to_string(varValue);
