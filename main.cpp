@@ -27,13 +27,15 @@ void addSpaces(string &toSeparate);
 
 void parse(vector<string> &separated);
 
+unsigned long findOperator(string &toSeparate,short &opLen);
+
+
 bool shouldStop = false;
 
 /* Receive a line or a set of commands and values from the user. Transfer them to the lexer
  * and then to the parser. */
 int main(int argc, char *argv[]) {
     vector<string> separated;
-
     if (argc == 2) { // from file
         fstream file;
         string buffer;
@@ -71,7 +73,6 @@ vector<string> lexer(string &toSeparate) {
     vector<string> separated;
     addSpaces(toSeparate);
     unsigned long index = findMinIndexToSeparate(toSeparate);
-    string word;
     while (index != string::npos) {
         string sub = toSeparate.substr(0, index);
         if ((sub.empty()) || (sub == "\f") || (sub == "\n") || (sub == "\r") || (sub == "\t") || (sub == "\v")
@@ -88,6 +89,8 @@ vector<string> lexer(string &toSeparate) {
                 separated.push_back(toSeparate);
                 return separated;
             }
+        }else if(sub=="if"){
+            findOperator()
         }
         index = findMinIndexToSeparate(toSeparate);
     }
@@ -134,8 +137,15 @@ unsigned long findMinIndexToSeparate(const string &str) {
     return index;
 }
 
-void addSpaces(string &toSeparate) {
-    short opLen = 2;
+//unsigned long findMinIndexOfOperator(const string &str) {
+//    vector<unsigned long> tmpVec = {str.find(' '), str.find('\f'), str.find('\n'), str.find('\r'),
+//                                    str.find('\t'), str.find('\v'), str.find(',')};
+//    auto it = min_element(tmpVec.begin(), tmpVec.end());
+//    unsigned long index = *(it);
+//    return index;
+//}
+
+unsigned long findOperator(string &toSeparate,short &opLen) {
     vector<unsigned long> tmpVec1 = {toSeparate.find("=="), toSeparate.find("!="), toSeparate.find(">="), toSeparate
             .find("<="), toSeparate.find("!=")};
     auto it1 = min_element(tmpVec1.begin(), tmpVec1.end());
@@ -147,7 +157,12 @@ void addSpaces(string &toSeparate) {
         index = *(it2);
         opLen = 1;
     }
+    return index;
+}
 
+void addSpaces(string &toSeparate) {
+    short opLen = 2;
+    unsigned long index=findOperator(toSeparate,opLen);
     if (index != string::npos) {
         toSeparate.insert(index, " ");
         if (opLen == 2) {

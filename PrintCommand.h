@@ -12,7 +12,6 @@ private:
     DataVars* dataVars;
 public:
     explicit PrintCommand(DataCommands* dataCommands, DataVars* dataVars);
-
     virtual void doCommand();
 };
 
