@@ -1,6 +1,7 @@
 #include <cstring>
 #include "EqualCommand.h"
 #include "DataVars.h"
+#include "ExpressionUtils.h"
 
 EqualCommand::EqualCommand(DataCommands *dataCommands, DataVars *dataVars) {
     this->dataCommands = dataCommands;
@@ -12,10 +13,9 @@ void EqualCommand::doCommand() {
     unsigned long index = this->dataCommands->getIndex();
     // If bind appears after "=" - do not do anything, otherwise ...
     if (strcmp(this->dataCommands->getSeparated().at(index + 1).c_str(), "bind") != 0) {
-
         string varValueStr = this->dataCommands->getSeparated().at(index + 1);
-        double varValue = valueStr.calculate();
-
+        ExpressionUtils expUtils;
+        double varValue = expUtils.calculateInfixStr(varValueStr,dataVars->getSymbolTable());
         string varName = this->dataCommands->getSeparated().at(index - 1);
         // Find the relevant var in the table and save its new value
         auto itSymbolTable = this->dataVars->getSymbolTable().find(varName);
