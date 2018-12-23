@@ -15,6 +15,7 @@
 #include "OpenDataServerCommand.h"
 #include "IfCommand.h"
 #include "EqualCommand.h"
+#include "ExitCommand.h"
 
 using namespace std;
 
@@ -26,10 +27,13 @@ void addSpaces(string &toSeparate);
 
 void parse(vector<string> &separated);
 
-// Receive a line or a set of commands and values from the user. Transfer them to the lexer
-// and then to the parser.
+bool shouldStop = false;
+
+/* Receive a line or a set of commands and values from the user. Transfer them to the lexer
+ * and then to the parser. */
 int main(int argc, char *argv[]) {
     vector<string> separated;
+
     if (argc == 2) { // from file
         fstream file;
         string buffer;
@@ -54,6 +58,11 @@ int main(int argc, char *argv[]) {
         throw "invalid arguments!";
     }
     parse(separated);
+    while (true) {
+        if (shouldStop) {
+            break;
+        }
+    }
     return 0;
 }
 
@@ -74,8 +83,8 @@ vector<string> lexer(string &toSeparate) {
         separated.push_back(sub);
         toSeparate.erase(0, index + 1);
         //there is "=" and no "bind" - complex expression - take the remains of the line as a whole
-        if(sub=="="){
-            if(toSeparate.find("bind")==string::npos){
+        if (sub == "=") {
+            if (toSeparate.find("bind") == string::npos) {
                 separated.push_back(toSeparate);
                 return separated;
             }
@@ -103,6 +112,7 @@ void parse(vector<string> &separated) {
     stringsToCommands.insert(pair<string, Command *>("if", new IfCommand(dataCommands)));
     stringsToCommands.insert(pair<string, Command *>("print", new PrintCommand(dataCommands, dataVars)));
     stringsToCommands.insert(pair<string, Command *>("=", new EqualCommand(dataCommands, dataVars)));
+    stringsToCommands.insert(pair<string, Command *>("exit", new ExitCommand(shouldStop)));
     auto it1 = separated.begin();
     while (it1 != separated.end()) {
         auto it2 = stringsToCommands.find(*it1);
@@ -132,7 +142,7 @@ void addSpaces(string &toSeparate) {
     unsigned long index = *(it1);
     if (index == string::npos) {// ==,!=,>=,<=,!= wasn't found - search =,<,>
         vector<unsigned long> tmpVec2 = {toSeparate.find('='), toSeparate.find('<'), toSeparate.find('>'), toSeparate
-                .find('{'), toSeparate.find('}'),toSeparate.find('('),toSeparate.find(')')};
+                .find('{'), toSeparate.find('}'), toSeparate.find('('), toSeparate.find(')')};
         auto it2 = min_element(tmpVec2.begin(), tmpVec2.end());
         index = *(it2);
         opLen = 1;

@@ -6,7 +6,7 @@
 #include "VarCommand.h"
 #include "Command.h"
 
-class SleepCommand : Command {
+class SleepCommand : public Command {
 private:
     DataCommands *dataCommands;
     DataVars *dataVars;

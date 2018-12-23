@@ -37,8 +37,6 @@ void OpenDataServerCommand::doCommand() {
     pthread_t tId;
     // Launch a thread
     pthread_create(&tId, nullptr, openServer_thread_callback, params);
-    // Join the thread with the main thread
-    //pthread_join(tId, nullptr);
 
     // set the new index of dataCommands
     this->dataCommands->setIndex(index);
