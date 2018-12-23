@@ -23,5 +23,8 @@ void EqualCommand::doCommand() {
             throw "This var has not been declared before";
         }
         itSymbolTable->second = varValue;
+        index += 2;
+        // set the new index of dataCommands
+        this->dataCommands->setIndex(index);
     }
 }

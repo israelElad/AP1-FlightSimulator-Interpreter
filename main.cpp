@@ -73,8 +73,9 @@ vector<string> lexer(string &toSeparate) {
     vector<string> separated;
     addSpaces(toSeparate);
     unsigned long index = findMinIndexToSeparate(toSeparate);
+    string sub;
     while (index != string::npos) {
-        string sub = toSeparate.substr(0, index);
+        sub = toSeparate.substr(0, index);
         if ((sub.empty()) || (sub == "\f") || (sub == "\n") || (sub == "\r") || (sub == "\t") || (sub == "\v")
             || (sub == ",")) {
             toSeparate.erase(0, index + 1);
@@ -83,16 +84,36 @@ vector<string> lexer(string &toSeparate) {
         }
         separated.push_back(sub);
         toSeparate.erase(0, index + 1);
-        //there is "=" and no "bind" - complex expression - take the remains of the line as a whole
+        //there is "=" and no "bind" - complex expression - break, then take the remains of the line as a whole
         if (sub == "=") {
             if (toSeparate.find("bind") == string::npos) {
-                separated.push_back(toSeparate);
-                return separated;
+                break;
             }
-        }else if(sub=="if"){
-            findOperator()
+        }else if(sub=="print"||sub=="sleep"){
+            //complex expression - break, then take the remains of the line as a whole
+            break;
+        }
+        else if(sub=="if"||sub=="while"){
+            //cut upto the operator
+            short opLen;
+            index=findOperator(toSeparate,opLen);
+            sub = toSeparate.substr(0, index);
+            toSeparate.erase(0, index);
+            separated.push_back(sub);
+            //cut operator
+            separated.push_back(toSeparate.substr(0,opLen));
+            toSeparate.erase(0, opLen);
+            //cut from the operator -  break, then take the remains of the line as a whole
+            break;
         }
         index = findMinIndexToSeparate(toSeparate);
+    }
+    index=min(toSeparate.find('{'),toSeparate.find('}')); //search for '{' or '}'
+    if(index!=string::npos){ // '{' or '}' was found
+        //separate upto '{' or '}'
+        sub = toSeparate.substr(0, index);
+        toSeparate.erase(0, index);
+        separated.push_back(sub);
     }
     separated.push_back(toSeparate);
     return separated;
@@ -137,15 +158,9 @@ unsigned long findMinIndexToSeparate(const string &str) {
     return index;
 }
 
-//unsigned long findMinIndexOfOperator(const string &str) {
-//    vector<unsigned long> tmpVec = {str.find(' '), str.find('\f'), str.find('\n'), str.find('\r'),
-//                                    str.find('\t'), str.find('\v'), str.find(',')};
-//    auto it = min_element(tmpVec.begin(), tmpVec.end());
-//    unsigned long index = *(it);
-//    return index;
-//}
 
 unsigned long findOperator(string &toSeparate,short &opLen) {
+    opLen = 2;
     vector<unsigned long> tmpVec1 = {toSeparate.find("=="), toSeparate.find("!="), toSeparate.find(">="), toSeparate
             .find("<="), toSeparate.find("!=")};
     auto it1 = min_element(tmpVec1.begin(), tmpVec1.end());
@@ -161,7 +176,7 @@ unsigned long findOperator(string &toSeparate,short &opLen) {
 }
 
 void addSpaces(string &toSeparate) {
-    short opLen = 2;
+    short opLen;
     unsigned long index=findOperator(toSeparate,opLen);
     if (index != string::npos) {
         toSeparate.insert(index, " ");
