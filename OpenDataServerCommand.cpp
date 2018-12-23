@@ -20,24 +20,12 @@ void OpenDataServerCommand::doCommand() {
     string portStr = this->dataCommands->getSeparated().at(index);
     // skip the port
     index++;
-    // check the integrity of the port
-    bool result = portOrPerSecIntegrityCheck(portStr);
-    // if the check return false we throw an error
-    if (!result) {
-        throw "The port is invalid!";
-    }
     int port = stoi(portStr);
 
     // get the perSec from the vector in dataCommands
     string perSecStr = this->dataCommands->getSeparated().at(index);
     // skip the perSec
     index++;
-    // check the integrity of the perSec
-    result = portOrPerSecIntegrityCheck(perSecStr);
-    // if the check return false we throw an error
-    if (!result) {
-        throw "The perSec is invalid!";
-    }
     int perSec = stoi(perSecStr);
 
     // create a struct of the thread params
@@ -54,14 +42,6 @@ void OpenDataServerCommand::doCommand() {
 
     // set the new index of dataCommands
     this->dataCommands->setIndex(index);
-}
-
-// The function checks the validity of the port or perSec it received
-bool OpenDataServerCommand::portOrPerSecIntegrityCheck(string &portOrPerSec) {
-    // Set the appropriate regular expression
-    regex b("[0-9]*");
-    // Returns true if the port/perSec matches the regular expression and returns false if not
-    return regex_match(portOrPerSec, b);
 }
 
 void *OpenDataServerCommand::openServer_thread_callback(void *params) {

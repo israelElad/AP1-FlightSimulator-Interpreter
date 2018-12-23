@@ -14,8 +14,6 @@ public:
     explicit SleepCommand(DataCommands *dataCommands, DataVars *dataVars);
 
     virtual void doCommand();
-
-    bool numIntegrityCheck(string &num);
 };
 
 

@@ -20,10 +20,6 @@ public:
 
     virtual void doCommand();
 
-    bool ipIntegrityCheck(string ip);
-
-    bool portIntegrityCheck(string port);
-
     static void *openClient_thread_callback(void *params);
 };
 

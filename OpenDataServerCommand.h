@@ -22,8 +22,6 @@ public:
 
     virtual void doCommand();
 
-    bool portOrPerSecIntegrityCheck(string &portOrPerSec);
-
     static void *openServer_thread_callback(void *dataReaderServerPtr);
 };
 

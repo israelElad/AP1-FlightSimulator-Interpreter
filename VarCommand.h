@@ -15,8 +15,6 @@ public:
     explicit VarCommand(DataCommands* dataCommands, DataVars* dataVars);
 
     virtual void doCommand();
-
-    bool nameIntegrityCheck(string &name);
 };
 
 

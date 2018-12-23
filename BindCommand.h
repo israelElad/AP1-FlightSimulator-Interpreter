@@ -16,8 +16,6 @@ public:
     explicit BindCommand(DataCommands* dataCommands, DataBinds* dataBinds);
 
     virtual void doCommand();
-
-    bool nameInSimulatorIntegrityCheck(string nameInSimulator);
 };
 
 #endif //AP3_BINDCOMMAND_H
