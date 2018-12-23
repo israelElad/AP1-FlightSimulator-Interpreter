@@ -13,9 +13,9 @@ private:
 public:
     explicit DataCommands(vector<string> &separated);
 
-    void setIndex(unsigned long index);
+    void setIndex(unsigned long &index);
 
-    const vector<string> &getSeparated();
+    vector<string> getSeparated();
 
     unsigned long getIndex();
 };

@@ -2,7 +2,7 @@
 
 DataBinds::DataBinds() = default;
 
-void DataBinds::addNewBind(string &nameInSimulator, string &varName) {
+void DataBinds::addNewBind(const string &nameInSimulator, const string &varName) {
     varToNameInSimulator.insert(pair<string, string>(varName, nameInSimulator));
 }
 

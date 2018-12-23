@@ -11,12 +11,12 @@ class DataVars {
 private:
     unordered_map<string, double> symbolTable;
 public:
-    unordered_map<string, double> &getSymbolTable();
+    unordered_map<string, double> getSymbolTable();
 
 public:
-    void setSymbolTableValue(string key, double newValue);
+    void setSymbolTableValue(const string &key, double &newValue);
     explicit DataVars();
-    void addNewVar(string newVar);
+    void addNewVar(const string &newVar);
 };
 
 

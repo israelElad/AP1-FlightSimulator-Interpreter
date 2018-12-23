@@ -9,10 +9,10 @@ unsigned long DataCommands::getIndex() {
     return index;
 }
 
-const vector<string> &DataCommands::getSeparated() {
+vector<string> DataCommands::getSeparated() {
     return separated;
 }
 
-void DataCommands::setIndex(unsigned long index) {
+void DataCommands::setIndex(unsigned long &index) {
     DataCommands::index = index;
 }

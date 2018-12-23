@@ -2,15 +2,15 @@
 
 DataVars::DataVars() = default;
 
-void DataVars::addNewVar(string newVar) {
+void DataVars::addNewVar(const string &newVar) {
     this->symbolTable.insert(pair<string, double>(newVar, 0));
 }
 
-void DataVars::setSymbolTableValue(string key, double newValue) {
+void DataVars::setSymbolTableValue(const string &key, double &newValue) {
     this->symbolTable.at(key) = newValue;
 }
 
-unordered_map<string, double> &DataVars::getSymbolTable() {
+unordered_map<string, double> DataVars::getSymbolTable() {
     return symbolTable;
 }
 

@@ -12,7 +12,7 @@ private:
 public:
     unordered_map<string, string> getVarToNameInSimulator();
     explicit DataBinds();
-    void addNewBind(string &nameInSimulator, string &varName);
+    void addNewBind(const string &nameInSimulator, const string &varName);
 };
 
 

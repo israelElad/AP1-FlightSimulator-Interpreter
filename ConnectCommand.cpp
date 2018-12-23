@@ -38,7 +38,6 @@ void ConnectCommand::doCommand() {
     // Join the thread with the main thread
     pthread_join(tId, nullptr);
 
-
     // set the new index of dataCommands
     this->dataCommands->setIndex(index);
 }
