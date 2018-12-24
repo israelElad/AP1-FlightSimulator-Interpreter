@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <sstream>
 #include <iostream>
+#include <mutex>
 #include "DataReaderServer.h"
 #include "DataBinds.h"
 
@@ -72,6 +73,8 @@ void DataReaderServer::openServer() {
                                    "/controls/flight/flaps",
                                    "/controls/engines/engine/throttle",
                                    "/engines/engine/rpm"};
+    mutex mtx;
+    string dataFromSimulator;
     while (true) {
         // If connection is established then start communicating
         bzero(buffer, 1024);
@@ -84,7 +87,7 @@ void DataReaderServer::openServer() {
         printf("Here is the message: %s\n", buffer);
 
         // put the data in vector
-        string dataFromSimulator = buffer;
+        dataFromSimulator = buffer;
         replace(dataFromSimulator.begin(), dataFromSimulator.end(), ',', ' '); // replace ',' by ' '
         vector<double> dataValues;
         stringstream ss(dataFromSimulator);
@@ -103,6 +106,7 @@ void DataReaderServer::openServer() {
             *itXml1 = itBinds->second;
             itXml1++;
         }
+        mtx.lock();
         // Updating the symbolTable according to the values ​​received
         auto itXml2 = xmlVariables.begin();
         auto itValues = dataValues.begin();
@@ -117,5 +121,6 @@ void DataReaderServer::openServer() {
             itXml2++;
             itValues++;
         }
+        mtx.unlock();
     }
 }

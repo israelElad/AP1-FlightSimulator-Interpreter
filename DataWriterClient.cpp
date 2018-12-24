@@ -4,6 +4,7 @@
 #include <strings.h>
 #include <cstring>
 #include <unistd.h>
+#include <mutex>
 #include "DataWriterClient.h"
 #include "DataVars.h"
 #include "DataBinds.h"
@@ -44,22 +45,27 @@ void DataWriterClient::openClient() {
         return;
     }
 
+    mutex mtx;
+    string varName;
+    double varValue;
+    string setCommand;
     while (true) {
         // Now ask for a message from the user, this message will be read by server
         bzero(buffer, 1024);
         if (this->dataVars->getIsChanged()) {
-            string varName = this->dataVars->getLastChanged();
+            varName = this->dataVars->getLastChanged();
             // Find the value of the var
             auto itSymbolTable = this->dataVars->getSymbolTable().find(varName);
-            double varValue = itSymbolTable->second;
+            varValue = itSymbolTable->second;
             // Find the name of the var according to how it appears in the simulator
             auto itBinds = this->dataBinds->getVarToNameInSimulator().find(varName);
             // Create an appropriate set command
-            string setCommand = "set " + itBinds->second + " " + to_string(varValue);
+            setCommand = "set " + itBinds->second + " " + to_string(varValue);
             strcpy(buffer, setCommand.c_str());
-
+            mtx.lock();
             // Send message to the server
             n = static_cast<int>(write(sockfd, buffer, strlen(buffer)));
+            mtx.unlock();
             if (n < 0) {
                 perror("ERROR writing to socket");
                 return;
