@@ -62,6 +62,8 @@ void DataWriterClient::openClient() {
             setCommand = "set " + itBinds->second + " " + to_string(varValue);
             strcpy(buffer, setCommand.c_str());
 
+            printf("Here is the message: %s\n", setCommand.c_str());
+
             pthread_mutex_lock(&this->mutex);
             // Send message to the server
             n = static_cast<int>(write(sockfd, buffer, strlen(buffer)));
