@@ -10,11 +10,12 @@ class DataWriterClient {
 private:
     string ip;
     int port;
-    DataBinds* dataBinds;
-    DataVars* dataVars;
+    DataBinds *dataBinds;
+    DataVars *dataVars;
+    pthread_mutex_t mutex;
 
 public:
-    DataWriterClient(string &ip, int &port, DataBinds* dataBinds, DataVars* dataVars);
+    DataWriterClient(string &ip, int &port, DataBinds *dataBinds, DataVars *dataVars, pthread_mutex_t &mutex);
 
     void openClient();
 };

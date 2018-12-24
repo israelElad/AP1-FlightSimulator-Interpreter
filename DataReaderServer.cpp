@@ -6,15 +6,15 @@
 #include <algorithm>
 #include <sstream>
 #include <iostream>
-#include <mutex>
 #include "DataReaderServer.h"
 #include "DataBinds.h"
 
-DataReaderServer::DataReaderServer(int &port, int &perSec, DataBinds *dataBinds, DataVars *dataVars) {
+DataReaderServer::DataReaderServer(int &port, int &perSec, DataBinds *dataBinds, DataVars *dataVars, pthread_mutex_t &mutex) {
     this->perSec = perSec;
     this->port = port;
     this->dataBinds = dataBinds;
     this->dataVars = dataVars;
+    this->mutex = mutex;
 }
 
 void DataReaderServer::openServer() {
@@ -73,7 +73,6 @@ void DataReaderServer::openServer() {
                                    "/controls/flight/flaps",
                                    "/controls/engines/engine/throttle",
                                    "/engines/engine/rpm"};
-    mutex mtx;
     string dataFromSimulator;
     while (true) {
         // If connection is established then start communicating
@@ -106,7 +105,7 @@ void DataReaderServer::openServer() {
             *itXml1 = itBinds->second;
             itXml1++;
         }
-        mtx.lock();
+        pthread_mutex_lock(&this->mutex);
         // Updating the symbolTable according to the values ​​received
         auto itXml2 = xmlVariables.begin();
         auto itValues = dataValues.begin();
@@ -121,6 +120,6 @@ void DataReaderServer::openServer() {
             itXml2++;
             itValues++;
         }
-        mtx.unlock();
+        pthread_mutex_unlock(&this->mutex);
     }
 }

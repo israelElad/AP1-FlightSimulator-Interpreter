@@ -4,10 +4,12 @@
 #include "DataReaderServer.h"
 #include <pthread.h>
 
-OpenDataServerCommand::OpenDataServerCommand(DataCommands *dataCommands, DataBinds *dataBinds, DataVars* dataVars) {
+OpenDataServerCommand::OpenDataServerCommand(DataCommands *dataCommands, DataBinds *dataBinds, DataVars *dataVars,
+                                             pthread_mutex_t &mutex) {
     this->dataCommands = dataCommands;
     this->dataBinds = dataBinds;
     this->dataVars = dataVars;
+    this->mutex = mutex;
 }
 
 void OpenDataServerCommand::doCommand() {
@@ -32,7 +34,7 @@ void OpenDataServerCommand::doCommand() {
     struct Params *params;
     params = new Params();
     // put values into the params
-    params->dataReaderServer = new DataReaderServer(port, perSec, this->dataBinds, this->dataVars);
+    params->dataReaderServer = new DataReaderServer(port, perSec, this->dataBinds, this->dataVars, this->mutex);
 
     pthread_t tId;
     // Launch a thread

@@ -4,16 +4,16 @@
 #include <strings.h>
 #include <cstring>
 #include <unistd.h>
-#include <mutex>
 #include "DataWriterClient.h"
 #include "DataVars.h"
 #include "DataBinds.h"
 
-DataWriterClient::DataWriterClient(string &ip, int &port, DataBinds *dataBinds, DataVars *dataVars) {
+DataWriterClient::DataWriterClient(string &ip, int &port, DataBinds *dataBinds, DataVars *dataVars, pthread_mutex_t &mutex) {
     this->ip = ip;
     this->port = port;
     this->dataBinds = dataBinds;
     this->dataVars = dataVars;
+    this->mutex = mutex;
 }
 
 void DataWriterClient::openClient() {
@@ -45,7 +45,6 @@ void DataWriterClient::openClient() {
         return;
     }
 
-    mutex mtx;
     string varName;
     double varValue;
     string setCommand;
@@ -62,10 +61,11 @@ void DataWriterClient::openClient() {
             // Create an appropriate set command
             setCommand = "set " + itBinds->second + " " + to_string(varValue);
             strcpy(buffer, setCommand.c_str());
-            mtx.lock();
+
+            pthread_mutex_lock(&this->mutex);
             // Send message to the server
             n = static_cast<int>(write(sockfd, buffer, strlen(buffer)));
-            mtx.unlock();
+            pthread_mutex_unlock(&this->mutex);
             if (n < 0) {
                 perror("ERROR writing to socket");
                 return;

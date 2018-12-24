@@ -8,11 +8,12 @@ class DataReaderServer {
 private:
     int port;
     int perSec;
-    DataBinds* dataBinds;
-    DataVars* dataVars;
+    DataBinds *dataBinds;
+    DataVars *dataVars;
+    pthread_mutex_t mutex;
 
 public:
-    DataReaderServer(int &port, int &perSec, DataBinds* dataBinds, DataVars* dataVars);
+    DataReaderServer(int &port, int &perSec, DataBinds *dataBinds, DataVars *dataVars, pthread_mutex_t &mutex);
 
     void openServer();
 };

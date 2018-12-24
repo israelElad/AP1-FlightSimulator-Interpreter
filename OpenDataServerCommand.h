@@ -12,13 +12,15 @@ using namespace std;
 class OpenDataServerCommand : public Command {
 private:
     DataCommands *dataCommands;
-    DataBinds* dataBinds;
-    DataVars* dataVars;
+    DataBinds *dataBinds;
+    DataVars *dataVars;
+    pthread_mutex_t mutex;
     struct Params {
-        DataReaderServer* dataReaderServer;
+        DataReaderServer *dataReaderServer;
     };
 public:
-    explicit OpenDataServerCommand(DataCommands *dataCommands, DataBinds* dataBinds, DataVars* dataVars);
+    explicit OpenDataServerCommand(DataCommands *dataCommands, DataBinds *dataBinds, DataVars *dataVars,
+                                   pthread_mutex_t &mutex);
 
     virtual void doCommand();
 

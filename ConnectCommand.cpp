@@ -4,10 +4,12 @@
 #include "DataWriterClient.h"
 #include <pthread.h>
 
-ConnectCommand::ConnectCommand(DataCommands *dataCommands, DataBinds* dataBinds, DataVars* dataVars) {
+ConnectCommand::ConnectCommand(DataCommands *dataCommands, DataBinds *dataBinds, DataVars *dataVars,
+                               pthread_mutex_t &mutex) {
     this->dataCommands = dataCommands;
     this->dataBinds = dataBinds;
     this->dataVars = dataVars;
+    this->mutex = mutex;
 }
 
 void ConnectCommand::doCommand() {
@@ -30,7 +32,7 @@ void ConnectCommand::doCommand() {
     struct Params *params;
     params = new Params();
     // put values into the params
-    params->dataWriterClient = new DataWriterClient(ip, port, this->dataBinds, this->dataVars);
+    params->dataWriterClient = new DataWriterClient(ip, port, this->dataBinds, this->dataVars, this->mutex);
 
     pthread_t tId;
     // Launch a thread

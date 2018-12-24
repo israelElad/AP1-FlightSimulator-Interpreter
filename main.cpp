@@ -25,12 +25,9 @@ unsigned long findMinIndexToSeparate(const string &str);
 
 void addSpaces(string &toSeparate);
 
-void parse(vector<string> &separated);
+void parse(vector<string> &separated, bool &shouldStop);
 
-unsigned long findOperator(string &toSeparate,short &opLen);
-
-
-bool shouldStop = false;
+unsigned long findOperator(string &toSeparate, short &opLen);
 
 /* Receive a line or a set of commands and values from the user. Transfer them to the lexer
  * and then to the parser. */
@@ -59,7 +56,8 @@ int main(int argc, char *argv[]) {
     } else { //invalid arguments
         throw "invalid arguments!";
     }
-    parse(separated);
+    bool shouldStop = false;
+    parse(separated, shouldStop);
     while (true) {
         if (shouldStop) {
             break;
@@ -89,14 +87,13 @@ vector<string> lexer(string &toSeparate) {
             if (toSeparate.find("bind") == string::npos) {
                 break;
             }
-        }else if(sub=="print"||sub=="sleep"){
+        } else if (sub == "print" || sub == "sleep") {
             //complex expression - break, then take the remains of the line as a whole
             break;
-        }
-        else if(sub=="if"||sub=="while"){
+        } else if (sub == "if" || sub == "while") {
             //cut upto the operator
             short opLen;
-            index=findOperator(toSeparate,opLen);
+            index = findOperator(toSeparate, opLen);
             sub = toSeparate.substr(0, index);
             toSeparate.erase(0, index);
             separated.push_back(sub);
@@ -108,8 +105,8 @@ vector<string> lexer(string &toSeparate) {
         }
         index = findMinIndexToSeparate(toSeparate);
     }
-    index=min(toSeparate.find('{'),toSeparate.find('}')); //search for '{' or '}'
-    if(index!=string::npos){ // '{' or '}' was found
+    index = min(toSeparate.find('{'), toSeparate.find('}')); //search for '{' or '}'
+    if (index != string::npos) { // '{' or '}' was found
         //separate upto '{' or '}'
         sub = toSeparate.substr(0, index);
         toSeparate.erase(0, index);
@@ -119,17 +116,26 @@ vector<string> lexer(string &toSeparate) {
     return separated;
 }
 
-void parse(vector<string> &separated) {
+void parse(vector<string> &separated, bool &shouldStop) {
     unordered_map<string, Command *> stringsToCommands;
+
     DataCommands *dataCommands;
     dataCommands = new DataCommands(separated);
+
     DataVars *dataVars;
     dataVars = new DataVars();
+
     DataBinds *dataBinds;
     dataBinds = new DataBinds();
+
+    pthread_mutex_t mutex;
+    pthread_mutex_init(&mutex, nullptr);
+
     stringsToCommands.insert(pair<string, Command *>("openDataServer", new OpenDataServerCommand(dataCommands,
-                                                                                                 dataBinds, dataVars)));
-    stringsToCommands.insert(pair<string, Command *>("connect", new ConnectCommand(dataCommands, dataBinds, dataVars)));
+                                                                                                 dataBinds, dataVars,
+                                                                                                 mutex)));
+    stringsToCommands.insert(
+            pair<string, Command *>("connect", new ConnectCommand(dataCommands, dataBinds, dataVars, mutex)));
     stringsToCommands.insert(pair<string, Command *>("var", new VarCommand(dataCommands, dataVars)));
     stringsToCommands.insert(pair<string, Command *>("bind", new BindCommand(dataCommands, dataBinds)));
     stringsToCommands.insert(pair<string, Command *>("while", new WhileCommand(dataCommands)));
@@ -138,16 +144,21 @@ void parse(vector<string> &separated) {
     stringsToCommands.insert(pair<string, Command *>("=", new EqualCommand(dataCommands, dataVars)));
     stringsToCommands.insert(pair<string, Command *>("exit", new ExitCommand(shouldStop)));
     auto it1 = separated.begin();
+    Command *command;
     while (it1 != separated.end()) {
         auto it2 = stringsToCommands.find(*it1);
         if (it2 == stringsToCommands.end()) {
             it1++;
             continue;
         }
-        Command *command = it2->second;
+        command = it2->second;
         command->doCommand();
         it1++;
     }
+    pthread_mutex_destroy(&mutex);
+    auto it3 = stringsToCommands.find("exit");
+    command = it3->second;
+    command->doCommand();
 }
 
 unsigned long findMinIndexToSeparate(const string &str) {
@@ -159,7 +170,7 @@ unsigned long findMinIndexToSeparate(const string &str) {
 }
 
 
-unsigned long findOperator(string &toSeparate,short &opLen) {
+unsigned long findOperator(string &toSeparate, short &opLen) {
     opLen = 2;
     vector<unsigned long> tmpVec1 = {toSeparate.find("=="), toSeparate.find("!="), toSeparate.find(">="), toSeparate
             .find("<="), toSeparate.find("!=")};
@@ -177,7 +188,7 @@ unsigned long findOperator(string &toSeparate,short &opLen) {
 
 void addSpaces(string &toSeparate) {
     short opLen;
-    unsigned long index=findOperator(toSeparate,opLen);
+    unsigned long index = findOperator(toSeparate, opLen);
     if (index != string::npos) {
         toSeparate.insert(index, " ");
         if (opLen == 2) {

@@ -12,11 +12,12 @@ private:
     DataCommands* dataCommands;
     DataBinds* dataBinds;
     DataVars* dataVars;
+    pthread_mutex_t mutex;
     struct Params {
         DataWriterClient* dataWriterClient;
     };
 public:
-    explicit ConnectCommand(DataCommands* dataCommands, DataBinds* dataBinds, DataVars* dataVars);
+    explicit ConnectCommand(DataCommands* dataCommands, DataBinds* dataBinds, DataVars* dataVars, pthread_mutex_t &mutex);
 
     virtual void doCommand();
 
