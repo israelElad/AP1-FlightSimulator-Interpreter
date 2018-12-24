@@ -52,7 +52,8 @@ void DataWriterClient::openClient() {
     while (true) {
         // Now ask for a message from the user, this message will be read by server
         bzero(buffer, 1024);
-        //if (this->dataVars->getIsChanged()) {
+        if (this->dataVars->getIsChanged()) {
+            cout<<"hiiiiiiiiiiiiiiiiiiiiiii"<<endl;
             varName = this->dataVars->getLastChanged();
             // Find the value of the var
             auto itSymbolTable = this->dataVars->getSymbolTable().find(varName);
@@ -63,7 +64,7 @@ void DataWriterClient::openClient() {
             setCommand = "set " + itBinds->second + " " + to_string(varValue);
             strcpy(buffer, setCommand.c_str());
 
-            printf("Here is the message: %s\n", setCommand.c_str());
+            printf("Set: %s\n", setCommand.c_str());
 
             pthread_mutex_lock(&this->mutex);
             // Send message to the server
@@ -74,6 +75,6 @@ void DataWriterClient::openClient() {
                 return;
             }
             this->dataVars->setIsChanged(false);
-       // }
+        }
     }
 }
