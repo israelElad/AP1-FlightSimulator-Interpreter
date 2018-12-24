@@ -11,6 +11,8 @@ EqualCommand::EqualCommand(DataCommands *dataCommands, DataVars *dataVars) {
 void EqualCommand::doCommand() {
     // get the index from dataCommands
     unsigned long index = this->dataCommands->getIndex();
+    // skip the name
+    index++;
 
     // If bind appears after "=" - do not do anything, otherwise ...
     if (strcmp(this->dataCommands->getSeparated().at(index + 1).c_str(), "bind") != 0) {
@@ -31,6 +33,10 @@ void EqualCommand::doCommand() {
         this->dataVars->setLastChanged(varName);
 
         index += 2;
+        // set the new index of dataCommands
+        this->dataCommands->setIndex(index);
+    } else {
+        index++;
         // set the new index of dataCommands
         this->dataCommands->setIndex(index);
     }

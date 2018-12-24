@@ -112,7 +112,10 @@ vector<string> lexer(string &toSeparate) {
         toSeparate.erase(0, index);
         separated.push_back(sub);
     }
-    separated.push_back(toSeparate);
+    if (!((toSeparate.empty()) || (toSeparate == "\f") || (toSeparate == "\n") || (toSeparate == "\r") ||
+          (toSeparate == "\t") || (toSeparate == "\v") || (toSeparate == ","))) {
+        separated.push_back(toSeparate);
+    }
     return separated;
 }
 
@@ -149,6 +152,7 @@ void parse(vector<string> &separated, bool &shouldStop) {
         auto it2 = stringsToCommands.find(*it1);
         if (it2 == stringsToCommands.end()) {
             it1++;
+
             continue;
         }
         command = it2->second;

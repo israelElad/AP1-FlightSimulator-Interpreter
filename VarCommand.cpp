@@ -17,8 +17,6 @@ void VarCommand::doCommand() {
     index++;
     // get the name from the vector in dataCommands
     string name = this->dataCommands->getSeparated().at(index);
-    // skip the name
-    index++;
     // else, we add the new var to the map in dataVars
     this->dataVars->addNewVar(name);
     // set the new index of dataCommands
