@@ -4,6 +4,7 @@
 #include <strings.h>
 #include <cstring>
 #include <unistd.h>
+#include <iostream>
 #include "DataWriterClient.h"
 #include "DataVars.h"
 #include "DataBinds.h"
@@ -17,6 +18,9 @@ DataWriterClient::DataWriterClient(string &ip, int &port, DataBinds *dataBinds, 
 }
 
 void DataWriterClient::openClient() {
+    char dummy;
+    cin >> dummy;
+
     int sockfd, portno, n;
     struct sockaddr_in serv_addr{};
     struct hostent *server;
