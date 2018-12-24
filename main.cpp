@@ -101,8 +101,8 @@ vector<string> lexer(string &toSeparate) {
             toSeparate.erase(0, index);
             separated.push_back(sub);
             //cut operator
-            separated.push_back(toSeparate.substr(0,opLen));
-            toSeparate.erase(0, opLen);
+            separated.push_back(toSeparate.substr(0, static_cast<unsigned long>(opLen)));
+            toSeparate.erase(0, static_cast<unsigned long>(opLen));
             //cut from the operator -  break, then take the remains of the line as a whole
             break;
         }

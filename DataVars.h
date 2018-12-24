@@ -10,12 +10,23 @@ using namespace std;
 class DataVars {
 private:
     unordered_map<string, double> symbolTable;
+    bool isChanged;
+    string lastChanged;
 public:
+    void setLastChanged(const string &newLastChanged);
+
+    string getLastChanged();
+
+    bool getIsChanged();
+
+    void setIsChanged(bool newIsChanged);
+
     unordered_map<string, double> getSymbolTable();
 
-public:
     void setSymbolTableValue(const string &key, double &newValue);
+
     explicit DataVars();
+
     void addNewVar(const string &newVar);
 };
 
