@@ -101,70 +101,8 @@ queue<string> ExpressionUtils::infixToPrefixQueue(string &infix) {
         stackOp.pop();
     }
     return queueValOp;
-//
-//        //convert to Expressions
-//        int numVarCounter=0;
-//        stack<string> stackHelp;
-//        while (!queueValOp.empty()){
-//            string back=queueValOp.back();
-//            queueValOp.pop_back();
-//            if(back == "+" || back == "-" || back == "*" || back == "/"){//operator
-//                numVarCounter=0;
-//            }
-//            else{//var or num
-//                ++numVarCounter;
-//            }
-//            stackHelp.push(back);
-//            if(numVarCounter==2){
-//                string operand1 =stackHelp.top();
-//                stackHelp.pop();
-//                Expression *exp1;
-//                if(isdigit(operand1[0])){ //exp is num
-//                    exp1=new Num(stoi(operand1));
-//                }
-//                else{//exp is var
-//                    exp1=new Var(operand1);
-//                }
-//                string operand2 =stackHelp.top();
-//                stackHelp.pop();
-//
-//                Expression *exp2;
-//                if(isdigit(operand2[0])){ //exp is num
-//                    exp2=new Num(stoi(operand2));
-//                }
-//                else{//exp is var
-//                    exp2=new Var(operand2);
-//                }
-//                string op =stackHelp.top();
-//                stackHelp.pop();
-//
-//                Expression *exp;
-//                if(op=="+"){
-//                    exp=new Plus(exp1,exp2);
-//                }
-//                else if(op=="-"){
-//                    //todo
-//                }
-//                else if(op=="/"){
-//
-//                }
-//                else if(op=="*"){
-//
-//                }
-//                while(){
-//
-//                }
-//            }
-
 
 }
-
-
-//
-//        for(int j=0;!queueValOp.empty(); j++){
-//            cout << queueValOp.front() << std::endl;;
-//            queueValOp.pop();
-//        }
 
 /**
  * converts queue of strings(as prefix) to a complex Expression.
