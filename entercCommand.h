@@ -3,10 +3,13 @@
 
 
 #include "Command.h"
+#include "DataCommands.h"
 
 class entercCommand : public Command {
+private:
+    DataCommands* dataCommands;
 public:
-    entercCommand();
+    explicit entercCommand(DataCommands *dataCommands);
     virtual void doCommand();
 };
 
