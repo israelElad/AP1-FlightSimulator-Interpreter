@@ -18,9 +18,6 @@ DataWriterClient::DataWriterClient(string &ip, int &port, DataBinds *dataBinds, 
 }
 
 void DataWriterClient::openClient() {
-    char dummy;
-    cin >> dummy;
-
     int sockfd, portno, n;
     struct sockaddr_in serv_addr{};
     struct hostent *server;
@@ -33,7 +30,7 @@ void DataWriterClient::openClient() {
         perror("ERROR opening socket");
         return;
     }
-    server = gethostbyname((this->ip).c_str());
+    server = gethostbyname(this->ip.c_str());
     if (server == nullptr) {
         fprintf(stderr, "ERROR, no such host\n");
         return;
@@ -55,7 +52,7 @@ void DataWriterClient::openClient() {
     while (true) {
         // Now ask for a message from the user, this message will be read by server
         bzero(buffer, 1024);
-        if (this->dataVars->getIsChanged()) {
+        //if (this->dataVars->getIsChanged()) {
             varName = this->dataVars->getLastChanged();
             // Find the value of the var
             auto itSymbolTable = this->dataVars->getSymbolTable().find(varName);
@@ -77,6 +74,6 @@ void DataWriterClient::openClient() {
                 return;
             }
             this->dataVars->setIsChanged(false);
-        }
+       // }
     }
 }
