@@ -60,11 +60,16 @@ void DataWriterClient::openClient() {
             varValue = itSymbolTable->second;
             // Find the name of the var according to how it appears in the simulator
             auto itBinds = this->dataBinds->getVarToNameInSimulator().find(varName);
+            //local variable- not found in binds
+            if(itBinds==this->dataBinds->getVarToNameInSimulator().end()){
+                this->dataVars->setIsChanged(false);
+                continue;
+            }
             // Create an appropriate set command
             setCommand = "set " + itBinds->second + " " + to_string(varValue);
             strcpy(buffer, setCommand.c_str());
 
-            printf("Set: %s\n", setCommand.c_str());
+            cout<<setCommand<<endl;
 
             pthread_mutex_lock(&this->mutex);
             // Send message to the server
