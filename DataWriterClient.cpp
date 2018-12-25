@@ -46,18 +46,14 @@ void DataWriterClient::openClient() {
         return;
     }
 
-    string varName;
-    double varValue;
-    string setCommand;
     while (true) {
         // Now ask for a message from the user, this message will be read by server
         bzero(buffer, 1024);
         if (this->dataVars->getIsChanged()) {
-            cout<<"hiiiiiiiiiiiiiiiiiiiiiii"<<endl;
-            varName = this->dataVars->getLastChanged();
+            string varName = this->dataVars->getLastChanged();
             // Find the value of the var
             auto itSymbolTable = this->dataVars->getSymbolTable().find(varName);
-            varValue = itSymbolTable->second;
+            double varValue = itSymbolTable->second;
             // Find the name of the var according to how it appears in the simulator
             auto itBinds = this->dataBinds->getVarToNameInSimulator().find(varName);
             //local variable- not found in binds
@@ -66,7 +62,7 @@ void DataWriterClient::openClient() {
                 continue;
             }
             // Create an appropriate set command
-            setCommand = "set " + itBinds->second + " " + to_string(varValue);
+            string setCommand = "set " + itBinds->second + " " + to_string(varValue) + "\r\n";
             strcpy(buffer, setCommand.c_str());
 
             cout<<setCommand<<endl;
