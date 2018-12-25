@@ -187,7 +187,7 @@ void parse(vector<string> &separated, bool &shouldStop) {
     stringsToCommands.insert(pair<string, Command *>("if", new IfCommand(dataCommands)));
     stringsToCommands.insert(pair<string, Command *>("print", new PrintCommand(dataCommands, dataVars)));
     stringsToCommands.insert(pair<string, Command *>("=", new EqualCommand(dataCommands, dataVars)));
-    stringsToCommands.insert(pair<string, Command *>("exit", new ExitCommand(shouldStop)));
+    stringsToCommands.insert(pair<string, Command *>("exit", new ExitCommand(&shouldStop)));
     stringsToCommands.insert(pair<string, Command *>("enterc", new entercCommand(dataCommands)));
     auto it1 = separated.begin();
     Command *command;

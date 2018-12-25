@@ -13,11 +13,11 @@ void DataVars::setSymbolTableValue(const string &key, double &newValue) {
 }
 
 unordered_map<string, double> DataVars::getSymbolTable() {
-    return symbolTable;
+    return this->symbolTable;
 }
 
 bool DataVars::getIsChanged() {
-    return isChanged;
+    return this->isChanged;
 }
 
 void DataVars::setIsChanged(bool newIsChanged) {
@@ -25,7 +25,7 @@ void DataVars::setIsChanged(bool newIsChanged) {
 }
 
 string DataVars::getLastChanged() {
-    return lastChanged;
+    return this->lastChanged;
 }
 
 void DataVars::setLastChanged(const string &newLastChanged) {

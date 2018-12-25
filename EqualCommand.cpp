@@ -3,8 +3,6 @@
 #include "DataVars.h"
 #include "ExpressionUtils.h"
 
-// elad!!!!!!!!
-
 EqualCommand::EqualCommand(DataCommands *dataCommands, DataVars *dataVars) {
     this->dataCommands = dataCommands;
     this->dataVars = dataVars;
@@ -31,8 +29,8 @@ void EqualCommand::doCommand() {
         itSymbolTable->second = varValue;
 
         // update isChanged and lastChanged
-        this->dataVars->setIsChanged(true);
         this->dataVars->setLastChanged(varName);
+        this->dataVars->setIsChanged(true);
 
         index += 2;
         // set the new index of dataCommands

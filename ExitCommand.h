@@ -5,9 +5,9 @@
 
 class ExitCommand : public Command {
 private:
-    bool shouldStop;
+    bool *shouldStop;
 public:
-    explicit ExitCommand(bool &shouldStop);
+    explicit ExitCommand(bool *shouldStop);
 
     virtual void doCommand();
 };
