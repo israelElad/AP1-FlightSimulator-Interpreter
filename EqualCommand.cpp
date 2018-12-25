@@ -3,6 +3,8 @@
 #include "DataVars.h"
 #include "ExpressionUtils.h"
 
+// elad!!!!!!!!
+
 EqualCommand::EqualCommand(DataCommands *dataCommands, DataVars *dataVars) {
     this->dataCommands = dataCommands;
     this->dataVars = dataVars;
