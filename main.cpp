@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
             throw "cannot open file!";
         }
         getline(file, buffer);
-        while (!file.eof()){
+        while (!file.eof()) {
             vector<string> tmpV = lexer(buffer);
             separated.insert(separated.end(), tmpV.begin(), tmpV.end());
             getline(file, buffer);
@@ -103,18 +103,17 @@ vector<string> lexer(string &toSeparate) {
             toSeparate.erase(0, static_cast<unsigned long>(opLen));
             //cut from the operator -  break, then take the remains of the line as a whole
             break;
-        }
-        else if(sub=="connect"){
+        } else if (sub == "connect") {
             //cut IP
             index = findMinIndexToSeparate(toSeparate);
             sub = toSeparate.substr(0, index);
             toSeparate.erase(0, index);
             separated.push_back(sub);
             break;
-        }else if(sub=="openDataServer"){
-            index=0;
-            bool wasNum=false;
-            while(!wasNum){
+        } else if (sub == "openDataServer") {
+            index = 0;
+            bool wasNum = false;
+            while (!wasNum) {
 //                while(isdigit(toSeparate[index])){
 //                    wasNum=true;
 //                    ++index;
@@ -122,20 +121,20 @@ vector<string> lexer(string &toSeparate) {
 ////                        ++index;
 ////                    }
 //                }
-                while(isspace(toSeparate[index])){
+                while (isspace(toSeparate[index])) {
                     ++index;
                 }
-                while(isdigit(toSeparate[index])||(((toSeparate[index] >= 'a') && (toSeparate[index] <= 'z')) ||
-                ((toSeparate[index] >= 'A') && (toSeparate[index] <= 'Z')))){
-                    wasNum=true;
+                while (isdigit(toSeparate[index]) || (((toSeparate[index] >= 'a') && (toSeparate[index] <= 'z')) ||
+                                                      ((toSeparate[index] >= 'A') && (toSeparate[index] <= 'Z')))) {
+                    wasNum = true;
                     ++index;
                 }
-                while(isspace(toSeparate[index])){
+                while (isspace(toSeparate[index])) {
                     ++index;
                 }
-                if(toSeparate[index] == '+' || toSeparate[index] == '-' || toSeparate[index] == '*' ||
-                toSeparate[index] == '/'){//operator
-                    wasNum=false;
+                if (toSeparate[index] == '+' || toSeparate[index] == '-' || toSeparate[index] == '*' ||
+                    toSeparate[index] == '/') {//operator
+                    wasNum = false;
                 }
                 ++index;
             }

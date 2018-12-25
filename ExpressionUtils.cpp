@@ -9,7 +9,7 @@
  * calculate infix string by converting it to prefix using dijkstra’s shunting yard variant,
  * then converts that to a complex expression, calculates it, and return the result.
  */
-double ExpressionUtils::calculateInfixStr(string &infix,unordered_map<string, double> assignment) {
+double ExpressionUtils::calculateInfixStr(const string &infix,unordered_map<string, double> assignment) {
     queue<string> prefixQueue= infixToPrefixQueue(infix);
     Expression *exp= queueToExp(prefixQueue);
     return exp->calculate(assignment);
@@ -17,7 +17,7 @@ double ExpressionUtils::calculateInfixStr(string &infix,unordered_map<string, do
 
 
 /** Find precedence of operators. **/
-int ExpressionUtils::precedence(string op) {
+int ExpressionUtils::precedence(const string &op) {
     if (op == "+" || op == "-")
         return 1;
     if (op == "*" || op == "/")
@@ -28,13 +28,16 @@ int ExpressionUtils::precedence(string op) {
 /**
  * converts infix string to prefix using dijkstra’s shunting yard variant.
  */
-queue<string> ExpressionUtils::infixToPrefixQueue(string &infix) {
+queue<string> ExpressionUtils::infixToPrefixQueue(const string &infix) {
 
     // stack to store operators.
     stack<string> stackOp;
 
     // queue to store vals and operators.
     queue<string> queueValOp;
+
+    bool flagOp=true;
+    bool isNeg=false;
 
     for (int i = 0; i < infix.length(); i++) {
         // whitespace- skip.
@@ -44,22 +47,31 @@ queue<string> ExpressionUtils::infixToPrefixQueue(string &infix) {
             //opening brace - push to stack
         else if (infix[i] == '(') {
             stackOp.push(string(1,infix[i]));
+            //todo
         }
 
             // push numbers to the values queue
         else if (isdigit(infix[i])) {
             string valStr;
+            if(isNeg){
+                valStr="-";
+                isNeg=false;
+            }
             while (isdigit(infix[i]) || infix[i] == '.') {
                 valStr += infix[i];
                 i++;
             }
             i--;
             queueValOp.push(valStr);
+            flagOp=false;
         }
 
             //variable- push to queue
         else if (((infix[i] >= 'a') && (infix[i] <= 'z')) || ((infix[i] >= 'A') && (infix[i] <= 'Z'))) {
             string varStr;
+            if(isNeg){
+                varStr="-";
+            }
             while (infix[i] != '+' && infix[i] != '-' && infix[i] != '*' && infix[i] != '/' && infix[i] != ')' &&
                    i < infix.length() &&!isspace(infix[i])) {
                 varStr += infix[i];
@@ -67,6 +79,7 @@ queue<string> ExpressionUtils::infixToPrefixQueue(string &infix) {
             }
             --i;
             queueValOp.push(varStr);
+            flagOp=false;
         }
 
             // Closing braces
@@ -82,9 +95,21 @@ queue<string> ExpressionUtils::infixToPrefixQueue(string &infix) {
             } else {
                 throw "Opening braces missing";
             }
+            flagOp=false;
         }
             //operator
         else {
+            if(infix[i]=='-'){
+                if(flagOp){
+                    isNeg=true;
+                    continue;
+                }
+//                if(flagBrace){
+//
+//                }
+
+            }
+            flagOp=true;
             //while the top of operators stack has equal or greater precedence than the current token(operator)
             while (!stackOp.empty() && precedence(stackOp.top()) >= precedence(string(1,infix[i]))) {
                 //pop operator from stack onto queue
@@ -101,9 +126,7 @@ queue<string> ExpressionUtils::infixToPrefixQueue(string &infix) {
         stackOp.pop();
     }
     return queueValOp;
-
 }
-
 /**
  * converts queue of strings(as prefix) to a complex Expression.
  */
@@ -135,6 +158,10 @@ Expression* ExpressionUtils::queueToExp(queue<string> &queueValOp){
             }
             expStack.push(exp);
         }
+        else if (front[0]=='-'){//neg num
+            front.erase(front.find('-'),1);
+            expStack.push(new Neg(new Num(stod(front))));
+        }
         else if (isdigit(front[0])){//num
             expStack.push(new Num(stod(front)));
         }
@@ -145,4 +172,3 @@ Expression* ExpressionUtils::queueToExp(queue<string> &queueValOp){
     //only one (complex) expression left on stack
     return expStack.top();
 }
-

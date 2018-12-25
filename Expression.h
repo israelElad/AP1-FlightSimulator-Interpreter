@@ -30,6 +30,7 @@ public:
 };
 
 
+
 class Plus:public Expression{
 private:
     Expression *left;
@@ -88,6 +89,30 @@ public:
       * in the assignment, and return the result.  If the expression
       * contains a variable which is not in the assignment, an exception is thrown.
       * */
+    virtual double calculate(unordered_map<string, double> assignment);
+
+    /**
+    * A convenience method. Like the `evaluate(assignment)` method above, but uses an empty assignment.
+    */
+    virtual double calculate();
+
+    /** Returns a new expression in which all occurrences of the variable
+     * var are replaced with the provided expression (Does not modify the current expression).**/
+    virtual Expression *assign(string var, Expression *expression);
+};
+
+
+class Neg:public Expression{
+private:
+    Expression *exp;
+public:
+    Neg(Expression *exp);
+
+    /**
+     * Evaluate the expression using the variable values provided
+     * in the assignment, and return the result.  If the expression
+     * contains a variable which is not in the assignment, an exception is thrown.
+     * */
     virtual double calculate(unordered_map<string, double> assignment);
 
     /**

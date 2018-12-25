@@ -66,6 +66,33 @@ Expression* Var::assign(string var, Expression *expression) {
     return this;
 }
 
+// Neg
+Neg::Neg(Expression *exp) {
+    this->exp = exp;
+}
+
+/**
+ * Evaluate the expression using the variable values provided
+ * in the assignment, and return the result.  If the expression
+ * contains a variable which is not in the assignment, an exception is thrown.
+ * */
+double Neg::calculate(unordered_map<string, double> assignment) {
+    return -exp->calculate(assignment);
+}
+
+/**
+* A convenience method. Like the `evaluate(assignment)` method above, but uses an empty assignment.
+*/
+double Neg::calculate() {
+    return -exp->calculate();
+}
+
+/** Returns a new expression in which all occurrences of the variable
+ * var are replaced with the provided expression (Does not modify the current expression).**/
+Expression *Neg::assign(string var, Expression *expression) {
+    return new Neg(exp->assign(var, expression));
+}
+
 
 //Plus
 
