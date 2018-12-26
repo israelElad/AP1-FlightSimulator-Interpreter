@@ -1,3 +1,4 @@
+#include <cstring>
 #include "WhileCommand.h"
 #include "DataCommands.h"
 #include "DataVars.h"
@@ -36,10 +37,27 @@ void WhileCommand::doCommand() {
 
     while (conditionParser->checkCondition()) {
         index = oldIndex;
+        // set the new index of dataCommands
+        this->dataCommands->setIndex(oldIndex);
+
         auto it1 = this->dataCommands->getSeparated().begin();
         it1 += index;
         Command *command;
-        while (*it1 != "}") {
+        int bracesCounter = 0;
+        do {
+            if (this->dataCommands->getSeparated().at(index).find('{') != string::npos) {
+                bracesCounter++;
+                index++;
+                it1++;
+                // set the new index of dataCommands
+                this->dataCommands->setIndex(index);
+            } else if (this->dataCommands->getSeparated().at(index).find('}') != string::npos) {
+                bracesCounter--;
+                index++;
+                it1++;
+                // set the new index of dataCommands
+                this->dataCommands->setIndex(index);
+            }
             auto it2 = stringsToCommands.find(*it1);
             if (it2 == stringsToCommands.end()) {
                 it1++;
@@ -47,13 +65,10 @@ void WhileCommand::doCommand() {
             }
             command = it2->second;
             command->doCommand();
-            it1++;
-        }
-        // set the new index of dataCommands
-        this->dataCommands->setIndex(oldIndex);
+            it1+=(this->dataCommands->getIndex() - index - 1);
+            index = this->dataCommands->getIndex();
+        } while (bracesCounter != 0);
     }
-
-    //TODO: index++ until we get to the }
 
     // set the new index of dataCommands
     this->dataCommands->setIndex(index);

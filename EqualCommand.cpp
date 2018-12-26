@@ -11,7 +11,7 @@ EqualCommand::EqualCommand(DataCommands *dataCommands, DataVars *dataVars) {
 void EqualCommand::doCommand() {
     // get the index from dataCommands
     unsigned long index = this->dataCommands->getIndex();
-    // skip the name
+    // skip the =
     index++;
 
     // If bind doesn't appear after "="
