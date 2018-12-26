@@ -5,11 +5,11 @@
 #include "Command.h"
 #include "DataCommands.h"
 
-class entercCommand : public Command {
+class EntercCommand : public Command {
 private:
     DataCommands* dataCommands;
 public:
-    explicit entercCommand(DataCommands *dataCommands);
+    explicit EntercCommand(DataCommands *dataCommands);
     virtual void doCommand();
 };
 

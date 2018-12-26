@@ -1,14 +1,14 @@
 #include <iostream>
-#include "entercCommand.h"
+#include "EntercCommand.h"
 #include "DataCommands.h"
 
 using namespace std;
 
-entercCommand::entercCommand(DataCommands *dataCommands){
+EntercCommand::EntercCommand(DataCommands *dataCommands){
     this->dataCommands = dataCommands;
 }
 
-void entercCommand::doCommand() {
+void EntercCommand::doCommand() {
     // get the index from dataCommands
     unsigned long index = this->dataCommands->getIndex();
     // skip the command

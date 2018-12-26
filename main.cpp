@@ -16,7 +16,7 @@
 #include "IfCommand.h"
 #include "EqualCommand.h"
 #include "ExitCommand.h"
-#include "entercCommand.h"
+#include "EntercCommand.h"
 
 using namespace std;
 
@@ -183,12 +183,12 @@ void parse(vector<string> &separated, bool &shouldStop) {
             pair<string, Command *>("connect", new ConnectCommand(dataCommands, dataBinds, dataVars, mutex)));
     stringsToCommands.insert(pair<string, Command *>("var", new VarCommand(dataCommands, dataVars)));
     stringsToCommands.insert(pair<string, Command *>("bind", new BindCommand(dataCommands, dataBinds)));
-    stringsToCommands.insert(pair<string, Command *>("while", new WhileCommand(dataCommands)));
-    stringsToCommands.insert(pair<string, Command *>("if", new IfCommand(dataCommands)));
+    stringsToCommands.insert(pair<string, Command *>("while", new WhileCommand(dataCommands, dataVars)));
+    stringsToCommands.insert(pair<string, Command *>("if", new IfCommand(dataCommands, dataVars)));
     stringsToCommands.insert(pair<string, Command *>("print", new PrintCommand(dataCommands, dataVars)));
     stringsToCommands.insert(pair<string, Command *>("=", new EqualCommand(dataCommands, dataVars)));
     stringsToCommands.insert(pair<string, Command *>("exit", new ExitCommand(&shouldStop)));
-    stringsToCommands.insert(pair<string, Command *>("enterc", new entercCommand(dataCommands)));
+    stringsToCommands.insert(pair<string, Command *>("enterc", new EntercCommand(dataCommands)));
     auto it1 = separated.begin();
     Command *command;
     while (it1 != separated.end()) {

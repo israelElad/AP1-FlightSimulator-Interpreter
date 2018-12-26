@@ -18,7 +18,7 @@ void EqualCommand::doCommand() {
     if (strcmp(this->dataCommands->getSeparated().at(index + 1).c_str(), "bind") != 0) {
         string varValueStr = this->dataCommands->getSeparated().at(index + 1);
         ExpressionUtils expUtils;
-        double varValue = expUtils.calculateInfixStr(varValueStr, dataVars->getSymbolTable());
+        double varValue = expUtils.calculateInfixStr(varValueStr, this->dataVars->getSymbolTable());
         string varName = this->dataCommands->getSeparated().at(index - 1);
 
         // Find the relevant var in the table and save its new value
