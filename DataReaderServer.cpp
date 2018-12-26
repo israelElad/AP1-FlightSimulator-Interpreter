@@ -75,6 +75,7 @@ void DataReaderServer::openServer() {
                                    "/engines/engine/rpm"};
     string dataFromSimulator;
     while (true) {
+        usleep(100000);
         // If connection is established then start communicating
         bzero(buffer, 1024);
         n = static_cast<int>(read(newSockFd, buffer, 1023));

@@ -14,7 +14,7 @@ void EqualCommand::doCommand() {
     // skip the name
     index++;
 
-    // If bind appears after "=" - do not do anything, otherwise ...
+    // If bind doesn't appear after "="
     if (strcmp(this->dataCommands->getSeparated().at(index + 1).c_str(), "bind") != 0) {
         string varValueStr = this->dataCommands->getSeparated().at(index + 1);
         ExpressionUtils expUtils;
@@ -34,7 +34,7 @@ void EqualCommand::doCommand() {
         index += 2;
         // set the new index of dataCommands
         this->dataCommands->setIndex(index);
-    } else {
+    } else { // If bind appears after "="
         index++;
         // set the new index of dataCommands
         this->dataCommands->setIndex(index);

@@ -59,13 +59,17 @@ void DataWriterClient::openClient() {
             auto itSymbolTable = this->dataVars->getSymbolTable().find(varName);
             double varValue = itSymbolTable->second;
             // Find the name of the var according to how it appears in the simulator
-            auto itBinds = this->dataBinds->getVarToNameInSimulator().find(varName);
+            string bindStr;
+            if(this->dataBinds->getVarToNameInSimulator().count(varName)==1){
+                bindStr = this->dataBinds->getVarToNameInSimulator()[varName];
+            }
             //local variable- not found in binds
-            if(itBinds==this->dataBinds->getVarToNameInSimulator().end()){
+            if(bindStr.empty()){
                 continue;
             }
             // Create an appropriate set command
-            string setCommand = "set " + itBinds->second + " " + to_string(varValue) + "\r\n";
+
+            string setCommand = "set " + bindStr + " " + to_string(varValue) + "\r\n";
             strcpy(buffer, setCommand.c_str());
 
             pthread_mutex_unlock(&this->mutex);
