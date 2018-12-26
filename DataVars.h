@@ -3,6 +3,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
 #include "Command.h"
 
 using namespace std;
@@ -10,16 +11,11 @@ using namespace std;
 class DataVars {
 private:
     unordered_map<string, double> symbolTable;
-    bool isChanged;
-    string lastChanged;
+    vector<string> lastChanged;
 public:
-    void setLastChanged(const string &newLastChanged);
+    void addLastChanged(const string &newLastChanged);
 
-    string getLastChanged();
-
-    bool getIsChanged();
-
-    void setIsChanged(bool newIsChanged);
+    vector<string> getLastChanged();
 
     unordered_map<string, double> getSymbolTable();
 
@@ -28,6 +24,8 @@ public:
     explicit DataVars();
 
     void addNewVar(const string &newVar);
+
+    void deleteFirstElementFromLastChanged();
 };
 
 

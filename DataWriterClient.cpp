@@ -49,8 +49,12 @@ void DataWriterClient::openClient() {
     while (true) {
         // Now ask for a message from the user, this message will be read by server
         bzero(buffer, 1024);
-        if (this->dataVars->getIsChanged()) {
-            string varName = this->dataVars->getLastChanged();
+        if (!(this->dataVars->getLastChanged().empty())) {
+            // lock
+            pthread_mutex_lock(&this->mutex);
+            string varName = this->dataVars->getLastChanged().at(0);
+            // delete first element
+            this->dataVars->deleteFirstElementFromLastChanged();
             // Find the value of the var
             auto itSymbolTable = this->dataVars->getSymbolTable().find(varName);
             double varValue = itSymbolTable->second;
@@ -58,24 +62,23 @@ void DataWriterClient::openClient() {
             auto itBinds = this->dataBinds->getVarToNameInSimulator().find(varName);
             //local variable- not found in binds
             if(itBinds==this->dataBinds->getVarToNameInSimulator().end()){
-                this->dataVars->setIsChanged(false);
                 continue;
             }
             // Create an appropriate set command
             string setCommand = "set " + itBinds->second + " " + to_string(varValue) + "\r\n";
             strcpy(buffer, setCommand.c_str());
 
+            pthread_mutex_unlock(&this->mutex);
+
             cout<<setCommand<<endl;
 
-            pthread_mutex_lock(&this->mutex);
             // Send message to the server
             n = static_cast<int>(write(sockfd, buffer, strlen(buffer)));
-            pthread_mutex_unlock(&this->mutex);
+
             if (n < 0) {
                 perror("ERROR writing to socket");
                 return;
             }
-            this->dataVars->setIsChanged(false);
         }
     }
 }

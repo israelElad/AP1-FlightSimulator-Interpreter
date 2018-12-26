@@ -4,6 +4,6 @@ connect 127.0.0.1 5402
 var throttle = bind "/controls/engines/engine/throttle"
 var heading = bind "/instrumentation/heading-indicator/offset-deg" 
 throttle = 1 
-var h0 = heading 
+heading = -1
 print "done"
 

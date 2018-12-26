@@ -205,7 +205,7 @@ void parse(vector<string> &separated, bool &shouldStop) {
     pthread_mutex_destroy(&mutex);
     auto it3 = stringsToCommands.find("exit");
     command = it3->second;
-    command->doCommand();
+//    command->doCommand();
 }
 
 unsigned long findMinIndexToSeparate(const string &str) {

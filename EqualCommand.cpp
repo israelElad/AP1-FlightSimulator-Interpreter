@@ -26,11 +26,10 @@ void EqualCommand::doCommand() {
         if (itSymbolTable == this->dataVars->getSymbolTable().end()) {
             throw "This var has not been declared before";
         }
-        itSymbolTable->second = varValue;
+        this->dataVars->setSymbolTableValue(varName, varValue);
 
         // update isChanged and lastChanged
-        this->dataVars->setLastChanged(varName);
-        this->dataVars->setIsChanged(true);
+        this->dataVars->addLastChanged(varName);
 
         index += 2;
         // set the new index of dataCommands

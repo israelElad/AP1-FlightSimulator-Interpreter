@@ -1,8 +1,6 @@
 #include "DataVars.h"
 
-DataVars::DataVars() {
-    this->isChanged = false;
-};
+DataVars::DataVars() = default;;
 
 void DataVars::addNewVar(const string &newVar) {
     this->symbolTable.insert(pair<string, double>(newVar, 0));
@@ -16,20 +14,17 @@ unordered_map<string, double> DataVars::getSymbolTable() {
     return this->symbolTable;
 }
 
-bool DataVars::getIsChanged() {
-    return this->isChanged;
-}
-
-void DataVars::setIsChanged(bool newIsChanged) {
-    this->isChanged = newIsChanged;
-}
-
-string DataVars::getLastChanged() {
+vector<string> DataVars::getLastChanged() {
     return this->lastChanged;
 }
 
-void DataVars::setLastChanged(const string &newLastChanged) {
-    this->lastChanged = newLastChanged;
+void DataVars::addLastChanged(const string &newLastChanged) {
+    this->lastChanged.push_back(newLastChanged);
 }
+
+void DataVars::deleteFirstElementFromLastChanged() {
+    this->lastChanged.erase(this->lastChanged.begin());
+}
+
 
 
