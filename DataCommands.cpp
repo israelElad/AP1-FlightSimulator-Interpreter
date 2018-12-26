@@ -10,6 +10,7 @@
 #include "VarCommand.h"
 #include "ConnectCommand.h"
 #include "PrintCommand.h"
+#include "SleepCommand.h"
 
 DataCommands::DataCommands(vector<string> &separated) {
     this->index = 0;
@@ -34,6 +35,7 @@ DataCommands::DataCommands(vector<string> &separated) {
     this->stringsToCommands.insert(pair<string, Command *>("print", new PrintCommand(this, dataVars)));
     this->stringsToCommands.insert(pair<string, Command *>("=", new EqualCommand(this, dataVars)));
     this->stringsToCommands.insert(pair<string, Command *>("enterc", new EntercCommand(this)));
+    this->stringsToCommands.insert(pair<string, Command *>("sleep", new SleepCommand(this, dataVars)));
 }
 
 unsigned long DataCommands::getIndex() {
