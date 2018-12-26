@@ -68,21 +68,19 @@ void DataWriterClient::openClient() {
                 continue;
             }
             // Create an appropriate set command
-
+            bindStr=bindStr.substr(1,bindStr.length()-2);
             string setCommand = "set " + bindStr + " " + to_string(varValue) + "\r\n";
             strcpy(buffer, setCommand.c_str());
 
-            pthread_mutex_unlock(&this->mutex);
 
             cout<<setCommand<<endl;
 
             // Send message to the server
-            n = static_cast<int>(write(sockfd, buffer, strlen(buffer)));
+            send(sockfd, buffer, strlen(buffer),0);
 
-            if (n < 0) {
-                perror("ERROR writing to socket");
-                return;
-            }
+            read(sockfd, buffer, strlen(buffer));
+//            cout<<buffer<<endl;
+            pthread_mutex_unlock(&this->mutex);
         }
     }
 }
