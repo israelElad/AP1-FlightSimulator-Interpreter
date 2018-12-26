@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <unistd.h>
 #include "DataCommands.h"
 #include "Command.h"
 

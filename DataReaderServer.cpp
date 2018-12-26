@@ -124,3 +124,7 @@ void DataReaderServer::openServer() {
         pthread_mutex_unlock(&this->mutex);
     }
 }
+
+//DataReaderServer::~DataReaderServer() {
+//    close(socketFd);
+//}

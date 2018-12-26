@@ -50,11 +50,12 @@ void DataWriterClient::openClient() {
         // Now ask for a message from the user, this message will be read by server
         bzero(buffer, 1024);
         if (!(this->dataVars->getLastChanged().empty())) {
-            // lock
-            pthread_mutex_lock(&this->mutex);
+
             string varName = this->dataVars->getLastChanged().at(0);
             // delete first element
             this->dataVars->deleteFirstElementFromLastChanged();
+            // lock
+            pthread_mutex_lock(&this->mutex);
             // Find the value of the var
             auto itSymbolTable = this->dataVars->getSymbolTable().find(varName);
             double varValue = itSymbolTable->second;
@@ -72,7 +73,6 @@ void DataWriterClient::openClient() {
             string setCommand = "set " + bindStr + " " + to_string(varValue) + "\r\n";
             strcpy(buffer, setCommand.c_str());
 
-
             cout<<setCommand<<endl;
 
             // Send message to the server
@@ -84,3 +84,7 @@ void DataWriterClient::openClient() {
         }
     }
 }
+//
+//DataWriterClient::~DataWriterClient() {
+//    close(sockfd);
+//}

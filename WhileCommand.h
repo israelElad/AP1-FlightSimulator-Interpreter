@@ -10,9 +10,8 @@ using namespace std;
 class WhileCommand : public Command {
 private:
     DataCommands* dataCommands;
-    DataVars* dataVars;
 public:
-    explicit WhileCommand(DataCommands* dataCommands, DataVars* dataVars);
+    explicit WhileCommand(DataCommands *dataCommands, DataVars *dataVars);
 
     virtual void doCommand();
 };
