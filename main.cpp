@@ -1,22 +1,10 @@
 #include <string>
-#include <vector>
-#include <ios>
-#include <iostream>
 #include <fstream>
+#include <vector>
+#include <iostream>
 #include <algorithm>
 #include "DataCommands.h"
 #include "Command.h"
-#include "DataVars.h"
-#include "ConnectCommand.h"
-#include "WhileCommand.h"
-#include "BindCommand.h"
-#include "PrintCommand.h"
-#include "VarCommand.h"
-#include "OpenDataServerCommand.h"
-#include "IfCommand.h"
-#include "EqualCommand.h"
-#include "ExitCommand.h"
-#include "EntercCommand.h"
 
 using namespace std;
 
@@ -162,50 +150,22 @@ vector<string> lexer(string &toSeparate) {
 }
 
 void parse(vector<string> &separated, bool &shouldStop) {
-    unordered_map<string, Command *> stringsToCommands;
-
     DataCommands *dataCommands;
     dataCommands = new DataCommands(separated);
-
-    DataVars *dataVars;
-    dataVars = new DataVars();
-
-    DataBinds *dataBinds;
-    dataBinds = new DataBinds();
-
-    pthread_mutex_t mutex;
-    pthread_mutex_init(&mutex, nullptr);
-
-    stringsToCommands.insert(pair<string, Command *>("openDataServer", new OpenDataServerCommand(dataCommands,
-                                                                                                 dataBinds, dataVars,
-                                                                                                 mutex)));
-    stringsToCommands.insert(
-            pair<string, Command *>("connect", new ConnectCommand(dataCommands, dataBinds, dataVars, mutex)));
-    stringsToCommands.insert(pair<string, Command *>("var", new VarCommand(dataCommands, dataVars)));
-    stringsToCommands.insert(pair<string, Command *>("bind", new BindCommand(dataCommands, dataBinds)));
-    stringsToCommands.insert(pair<string, Command *>("while", new WhileCommand(dataCommands, dataVars)));
-    stringsToCommands.insert(pair<string, Command *>("if", new IfCommand(dataCommands, dataVars)));
-    stringsToCommands.insert(pair<string, Command *>("print", new PrintCommand(dataCommands, dataVars)));
-    stringsToCommands.insert(pair<string, Command *>("=", new EqualCommand(dataCommands, dataVars)));
-    stringsToCommands.insert(pair<string, Command *>("exit", new ExitCommand(&shouldStop)));
-    stringsToCommands.insert(pair<string, Command *>("enterc", new EntercCommand(dataCommands)));
+    unordered_map<string, Command *> stringsToCommands = dataCommands->getStringsToCommands();
     auto it1 = separated.begin();
     Command *command;
     while (it1 != separated.end()) {
         auto it2 = stringsToCommands.find(*it1);
         if (it2 == stringsToCommands.end()) {
             it1++;
-
             continue;
         }
         command = it2->second;
         command->doCommand();
         it1++;
     }
-    pthread_mutex_destroy(&mutex);
-    auto it3 = stringsToCommands.find("exit");
-    command = it3->second;
-//    command->doCommand();
+    //shouldStop = true;
 }
 
 unsigned long findMinIndexToSeparate(const string &str) {

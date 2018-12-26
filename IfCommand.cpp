@@ -1,7 +1,7 @@
 #include "IfCommand.h"
 #include "ConditionParser.h"
 
-IfCommand::IfCommand(DataCommands *dataCommands, DataVars* dataVars) {
+IfCommand::IfCommand(DataCommands *dataCommands, DataVars *dataVars) {
     this->dataCommands = dataCommands;
     this->dataVars = dataVars;
 }
@@ -27,9 +27,9 @@ void IfCommand::doCommand() {
     // skip the right
     index++;
 
-    ConditionParser* conditionParser;
+    ConditionParser *conditionParser;
     conditionParser = new ConditionParser(left, oper, right, this->dataVars);
-    if (conditionParser->checkCondition()){
+    if (conditionParser->checkCondition()) {
 
     }
 

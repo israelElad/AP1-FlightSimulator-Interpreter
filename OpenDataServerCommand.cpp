@@ -2,6 +2,7 @@
 #include "OpenDataServerCommand.h"
 #include "DataCommands.h"
 #include "DataReaderServer.h"
+#include "ExpressionUtils.h"
 #include <pthread.h>
 
 OpenDataServerCommand::OpenDataServerCommand(DataCommands *dataCommands, DataBinds *dataBinds, DataVars *dataVars,
@@ -18,17 +19,19 @@ void OpenDataServerCommand::doCommand() {
     // skip the command
     index++;
 
+    ExpressionUtils expUtils;
+
     // get the port from the vector in dataCommands
     string portStr = this->dataCommands->getSeparated().at(index);
     // skip the port
     index++;
-    int port = stoi(portStr);
+    int port = static_cast<int>(expUtils.calculateInfixStr(portStr, this->dataVars->getSymbolTable()));
 
     // get the perSec from the vector in dataCommands
     string perSecStr = this->dataCommands->getSeparated().at(index);
     // skip the perSec
     index++;
-    int perSec = stoi(perSecStr);
+    int perSec = static_cast<int>(expUtils.calculateInfixStr(perSecStr, this->dataVars->getSymbolTable()));
 
     // create a struct of the thread params
     struct Params *params;

@@ -3,7 +3,7 @@
 #include "DataVars.h"
 #include "ConditionParser.h"
 
-WhileCommand::WhileCommand(DataCommands* dataCommands, DataVars* dataVars) {
+WhileCommand::WhileCommand(DataCommands *dataCommands, DataVars *dataVars) {
     this->dataCommands = dataCommands;
     this->dataVars = dataVars;
 }
@@ -29,11 +29,28 @@ void WhileCommand::doCommand() {
     // skip the right
     index++;
 
-    ConditionParser* conditionParser;
+    ConditionParser *conditionParser;
     conditionParser = new ConditionParser(left, oper, right, this->dataVars);
+    unordered_map<string, Command *> stringsToCommands = dataCommands->getStringsToCommands();
+    unsigned long oldIndex = index;
 
-    while (conditionParser->checkCondition()){
-
+    while (conditionParser->checkCondition()) {
+        index = oldIndex;
+        auto it1 = this->dataCommands->getSeparated().begin();
+        it1 += index;
+        Command *command;
+        while (*it1 != "}") {
+            auto it2 = stringsToCommands.find(*it1);
+            if (it2 == stringsToCommands.end()) {
+                it1++;
+                continue;
+            }
+            command = it2->second;
+            command->doCommand();
+            it1++;
+        }
+        // set the new index of dataCommands
+        this->dataCommands->setIndex(oldIndex);
     }
 
     //TODO: index++ until we get to the }

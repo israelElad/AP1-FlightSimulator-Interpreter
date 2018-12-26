@@ -2,6 +2,7 @@
 #include "ConnectCommand.h"
 #include "DataCommands.h"
 #include "DataWriterClient.h"
+#include "ExpressionUtils.h"
 #include <pthread.h>
 
 ConnectCommand::ConnectCommand(DataCommands *dataCommands, DataBinds *dataBinds, DataVars *dataVars,
@@ -22,11 +23,14 @@ void ConnectCommand::doCommand() {
     string ip = this->dataCommands->getSeparated().at(index);
     // skip the ip
     index++;
+
+    ExpressionUtils expUtils;
+
     // get the port from the vector in dataCommands
     string portStr = this->dataCommands->getSeparated().at(index);
     // skip the port
     index++;
-    int port = stoi(portStr);
+    int port = static_cast<int>(expUtils.calculateInfixStr(portStr, this->dataVars->getSymbolTable()));
 
     // create a struct of the thread params
     struct Params *params;
