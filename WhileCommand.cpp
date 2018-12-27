@@ -35,7 +35,6 @@ void WhileCommand::doCommand() {
     unordered_map<string, Command *> stringsToCommands = dataCommands->getStringsToCommands();
     unsigned long oldIndex = index;
 
-    bool test = conditionParser->checkCondition();
     while (conditionParser->checkCondition()) {
         index = oldIndex;
         // set the new index of dataCommands
@@ -72,6 +71,7 @@ void WhileCommand::doCommand() {
             it1 += index;
 
         } while (bracesCounter != 0);
+        conditionParser = new ConditionParser(left, oper, right, this->dataVars);
     }
 
     // set the new index of dataCommands
