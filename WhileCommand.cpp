@@ -34,8 +34,9 @@ void WhileCommand::doCommand() {
     conditionParser = new ConditionParser(left, oper, right, this->dataVars);
     unordered_map<string, Command *> stringsToCommands = dataCommands->getStringsToCommands();
     unsigned long oldIndex = index;
-
+    bool isEntered = false;
     while (conditionParser->checkCondition()) {
+        isEntered = true;
         index = oldIndex;
         // set the new index of dataCommands
         this->dataCommands->setIndex(oldIndex);
@@ -51,11 +52,13 @@ void WhileCommand::doCommand() {
                 it1++;
                 // set the new index of dataCommands
                 this->dataCommands->setIndex(index);
+                continue;
             } else if (this->dataCommands->getSeparated().at(index).find('}') != string::npos) {
                 bracesCounter--;
                 index++;
                 // set the new index of dataCommands
                 this->dataCommands->setIndex(index);
+                continue;
             }
             auto it2 = stringsToCommands.find(*it1);
             if (it2 == stringsToCommands.end()) {
@@ -72,6 +75,18 @@ void WhileCommand::doCommand() {
 
         } while (bracesCounter != 0);
         conditionParser = new ConditionParser(left, oper, right, this->dataVars);
+    }
+    if (!isEntered) {
+        //right now at '{'. index++ until we get to the last '}'
+        int bracesSkipCount = 0;
+        do{
+            if (this->dataCommands->getSeparated().at(index).find('{') != string::npos) {
+                bracesSkipCount++;
+            }else if (this->dataCommands->getSeparated().at(index).find('}') != string::npos) {
+                bracesSkipCount--;
+            }
+            index++;
+        }while (bracesSkipCount > 0);
     }
 
     // set the new index of dataCommands

@@ -47,7 +47,6 @@ queue<string> ExpressionUtils::infixToPrefixQueue(const string &infix) {
             //opening brace - push to stack
         else if (infix[i] == '(') {
             stackOp.push(string(1,infix[i]));
-            //todo
         }
 
             // push numbers to the values queue
@@ -71,6 +70,7 @@ queue<string> ExpressionUtils::infixToPrefixQueue(const string &infix) {
             string varStr;
             if(isNeg){
                 varStr="-";
+                isNeg=false;
             }
             while (infix[i] != '+' && infix[i] != '-' && infix[i] != '*' && infix[i] != '/' && infix[i] != ')' &&
                    i < infix.length() &&!isspace(infix[i])) {
@@ -160,7 +160,12 @@ Expression* ExpressionUtils::queueToExp(queue<string> &queueValOp){
         }
         else if (front[0]=='-'){//neg num
             front.erase(front.find('-'),1);
-            expStack.push(new Neg(new Num(stod(front))));
+            if (isdigit(front[0])) {//num
+                expStack.push(new Neg(new Num(stod(front))));
+            }
+            else { //var
+                expStack.push(new Neg(new Var(front)));
+            }
         }
         else if (isdigit(front[0])){//num
             expStack.push(new Num(stod(front)));

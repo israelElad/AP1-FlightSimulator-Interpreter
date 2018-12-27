@@ -48,11 +48,7 @@ int main(int argc, char *argv[]) {
     }
     bool shouldStop = false;
     parse(separated, shouldStop);
-    while (true) {
-        if (shouldStop) {
-            break;
-        }
-    }
+    while (true) {}
     return 0;
 }
 
@@ -103,13 +99,6 @@ vector<string> lexer(string &toSeparate) {
             index = 0;
             bool wasNum = false;
             while (!wasNum) {
-//                while(isdigit(toSeparate[index])){
-//                    wasNum=true;
-//                    ++index;
-////                    while(isdigit(toSeparate[index])){
-////                        ++index;
-////                    }
-//                }
                 while (isspace(toSeparate[index])) {
                     ++index;
                 }
@@ -171,7 +160,6 @@ void parse(vector<string> &separated, bool &shouldStop) {
         }
         it1++;
     }
-    //shouldStop = true;
 }
 
 unsigned long findMinIndexToSeparate(const string &str) {

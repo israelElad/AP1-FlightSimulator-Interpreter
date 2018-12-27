@@ -34,7 +34,6 @@ void IfCommand::doCommand() {
 
 
     if (conditionParser->checkCondition()) {
-
         index = oldIndex;
         // set the new index of dataCommands
         this->dataCommands->setIndex(oldIndex);
@@ -50,26 +49,37 @@ void IfCommand::doCommand() {
                 it1++;
                 // set the new index of dataCommands
                 this->dataCommands->setIndex(index);
+                continue;
             } else if (this->dataCommands->getSeparated().at(index).find('}') != string::npos) {
                 bracesCounter--;
                 index++;
-                it1++;
                 // set the new index of dataCommands
                 this->dataCommands->setIndex(index);
+                continue;
             }
             auto it2 = stringsToCommands.find(*it1);
             if (it2 == stringsToCommands.end()) {
                 it1++;
                 continue;
             }
+
             command = it2->second;
             command->doCommand();
-            it1 += (this->dataCommands->getIndex() - index);
-            index = this->dataCommands->getIndex();
-        } while (bracesCounter != 0);
-    }
 
-    //TODO: index++ until we get to the }
+            index = this->dataCommands->getIndex();
+            it1 = this->dataCommands->getSeparated().begin();
+            it1 += index;
+
+        } while (bracesCounter != 0);
+//        conditionParser = new ConditionParser(left, oper, right, this->dataVars);
+    } else {
+        //index++ until we get to the }
+        while (this->dataCommands->getSeparated().at(index).find('}')==string::npos){
+            index++;
+        }
+        //skip }
+        index++;
+    }
 
     // set the new index of dataCommands
     this->dataCommands->setIndex(index);
