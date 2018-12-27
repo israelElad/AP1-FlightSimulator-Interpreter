@@ -164,6 +164,11 @@ void parse(vector<string> &separated, bool &shouldStop) {
         }
         command = it2->second;
         command->doCommand();
+        if ((*it1 == "while") || (*it1 == "if")){
+            it1 = separated.begin();
+            it1 += dataCommands->getIndex();
+            continue;
+        }
         it1++;
     }
     //shouldStop = true;
