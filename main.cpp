@@ -167,7 +167,6 @@ void parse(vector<string> &separated, bool &shouldStop) {
         it1++;
     }
     //shouldStop = true;
-    //
 }
 
 unsigned long findMinIndexToSeparate(const string &str) {
