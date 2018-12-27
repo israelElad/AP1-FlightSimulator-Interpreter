@@ -23,6 +23,9 @@ void DataVars::addLastChanged(const string &newLastChanged) {
 }
 
 void DataVars::deleteFirstElementFromLastChanged() {
+    if(this->lastChanged.empty()){
+        throw "cannot delete element";
+    }
     this->lastChanged.erase(this->lastChanged.begin());
 }
 

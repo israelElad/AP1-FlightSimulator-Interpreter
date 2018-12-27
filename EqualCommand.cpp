@@ -1,4 +1,5 @@
 #include <cstring>
+#include <unistd.h>
 #include "EqualCommand.h"
 #include "DataVars.h"
 #include "ExpressionUtils.h"
@@ -30,6 +31,7 @@ void EqualCommand::doCommand() {
 
         // update isChanged and lastChanged
         this->dataVars->addLastChanged(varName);
+//        sleep(1);
 
         index += 2;
         // set the new index of dataCommands
