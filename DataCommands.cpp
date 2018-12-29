@@ -46,8 +46,8 @@ vector<string> DataCommands::getSeparated() {
     return separated;
 }
 
-void DataCommands::setIndex(unsigned long &index) {
-    DataCommands::index = index;
+void DataCommands::setIndex(unsigned long index) {
+    this->index = index;
 }
 
 unordered_map<string, Command *> DataCommands::getStringsToCommands() {

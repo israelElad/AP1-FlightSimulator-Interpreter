@@ -20,7 +20,7 @@ public:
 
     explicit DataCommands(vector<string> &separated);
 
-    void setIndex(unsigned long &index);
+    void setIndex(unsigned long index);
 
     vector<string> getSeparated();
 

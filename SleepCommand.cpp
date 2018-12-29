@@ -18,7 +18,10 @@ void SleepCommand::doCommand() {
     index++;
     ExpressionUtils expUtils;
     double num = expUtils.calculateInfixStr(numStr,dataVars->getSymbolTable());
-    usleep(static_cast<unsigned int>(num * 1000));
+    if(num<1000){
+        num=1000;
+    }
+    sleep(num /1000);
     // set the new index of dataCommands
     this->dataCommands->setIndex(index);
 }

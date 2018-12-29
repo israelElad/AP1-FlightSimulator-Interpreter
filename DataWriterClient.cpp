@@ -45,9 +45,11 @@ void DataWriterClient::openClient() {
         perror("ERROR connecting");
         return;
     }
+    cout<<"before if"<<endl;
 
     while (true) {
         if (!(this->dataVars->getLastChanged().empty())) {
+            cout<<"entered if"<<endl;
             string varName = this->dataVars->getLastChanged().at(0);
             // delete first element
             this->dataVars->deleteFirstElementFromLastChanged();
@@ -63,6 +65,7 @@ void DataWriterClient::openClient() {
             }
             //local variable- not found in binds
             if(bindStr.empty()){
+                cout<<"bindStr empty"<<endl;
                 continue;
             }
             // Create an appropriate set command
@@ -77,7 +80,7 @@ void DataWriterClient::openClient() {
             // Send message to the server
             send(sockfd, buffer, strlen(buffer),0);
 
-            read(sockfd, buffer, strlen(buffer));
+//            read(sockfd, buffer, strlen(buffer));
 //            cout<<buffer<<endl;
 //            pthread_mutex_unlock(&this->mutex);
         }

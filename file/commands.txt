@@ -17,7 +17,7 @@ breaks = 0
 throttle = 1
 while alt < 1 {
 	rudder = (h0 - heading)/80
-	aileron = -roll / 70
+	aileron = roll*-1 / 70
 	elevator = pitch / 50
 	print alt
 	sleep 250

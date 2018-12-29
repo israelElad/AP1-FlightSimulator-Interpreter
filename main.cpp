@@ -158,6 +158,9 @@ void parse(vector<string> &separated, bool &shouldStop) {
             it1 += dataCommands->getIndex();
             continue;
         }
+//        if(*it1=="="){
+//            sleep(3);
+//        }
         it1++;
     }
 }
