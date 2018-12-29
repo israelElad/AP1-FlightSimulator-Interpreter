@@ -31,10 +31,11 @@ void EqualCommand::doCommand() {
 
         // update isChanged and lastChanged
         this->dataVars->addLastChanged(varName);
-        index += 2;
+//        sleep(1);
+
+        index = index + 2;
         // set the new index of dataCommands
         this->dataCommands->setIndex(index);
-        sleep(2);
     } else { // If bind appears after "="
         index++;
         // set the new index of dataCommands
