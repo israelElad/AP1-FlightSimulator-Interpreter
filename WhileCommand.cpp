@@ -60,14 +60,14 @@ void WhileCommand::doCommand() {
                 this->dataCommands->setIndex(index);
                 continue;
             }
-            auto it2 = stringsToCommands.find(*it1);
-            if (it2 == stringsToCommands.end()) {
+            if(stringsToCommands.count(*it1)>=1) {
+                command = stringsToCommands.at(*it1);
+                command->doCommand();
+            }
+            else{
                 it1++;
                 continue;
             }
-
-            command = it2->second;
-            command->doCommand();
 
             index = this->dataCommands->getIndex();
             it1 = this->dataCommands->getSeparated().begin();

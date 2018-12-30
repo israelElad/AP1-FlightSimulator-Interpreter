@@ -13,6 +13,8 @@ private:
     unordered_map<string, double> symbolTable;
     vector<string> lastChanged;
 public:
+    bool isChanged=false;
+
     void addLastChanged(const string &newLastChanged);
 
     vector<string> getLastChanged();

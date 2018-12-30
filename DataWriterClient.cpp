@@ -48,7 +48,7 @@ void DataWriterClient::openClient() {
     cout<<"before if"<<endl;
 
     while (true) {
-        if (!(this->dataVars->getLastChanged().empty())) {
+        if (this->dataVars->isChanged) {
             cout<<"entered if"<<endl;
             string varName = this->dataVars->getLastChanged().at(0);
             // delete first element
@@ -56,12 +56,17 @@ void DataWriterClient::openClient() {
             // lock
 //            pthread_mutex_lock(&this->mutex);
             // Find the value of the var
-            auto itSymbolTable = this->dataVars->getSymbolTable().find(varName);
-            double varValue = itSymbolTable->second;
+            double varValue=0;
+            if(this->dataBinds->getVarToNameInSimulator().count(varName)>=1) {
+                varValue = this->dataVars->getSymbolTable().at(varName);
+            }
+            else{
+                cout<<"error"<<endl;
+            }
             // Find the name of the var according to how it appears in the simulator
             string bindStr;
             if(this->dataBinds->getVarToNameInSimulator().count(varName)==1){
-                bindStr = this->dataBinds->getVarToNameInSimulator()[varName];
+                bindStr = this->dataBinds->getVarToNameInSimulator().at(varName);
             }
             //local variable- not found in binds
             if(bindStr.empty()){
