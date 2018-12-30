@@ -88,7 +88,7 @@ void DataReaderServer::openServer() {
 
         // put the data in vector
         dataFromSimulator = buffer;
-        replace(dataFromSimulator.begin(), dataFromSimulator.end(), ',', ' '); // replace ',' by ' '
+        replace(dataFromSimulator.begin(), dataFromSimulator.end(), ',', ' '); // replace ' , ' by ' '
         vector<double> dataValues;
         stringstream ss(dataFromSimulator);
         double temp;
