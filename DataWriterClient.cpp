@@ -18,6 +18,7 @@ DataWriterClient::DataWriterClient(string &ip, int &port, DataBinds *dataBinds, 
 }
 
 void DataWriterClient::openClient() {
+    cout<<"openning client"<<endl;
     int sockfd, portno, n;
     struct sockaddr_in serv_addr{};
     struct hostent *server;
@@ -80,7 +81,7 @@ void DataWriterClient::openClient() {
 
             strcpy(buffer, setCommand.c_str());
 
-            cout<<setCommand<<endl;
+            cout<<buffer<<endl;
 
             // Send message to the server
             send(sockfd, buffer, strlen(buffer),0);
