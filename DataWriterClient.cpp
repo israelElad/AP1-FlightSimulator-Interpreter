@@ -55,7 +55,7 @@ void DataWriterClient::openClient() {
             // delete first element
             this->dataVars->deleteFirstElementFromLastChanged();
             // lock
-//            pthread_mutex_lock(&this->mutex);
+            pthread_mutex_lock(&this->mutex);
             // Find the value of the var
             double varValue=0;
             if(this->dataBinds->getVarToNameInSimulator().count(varName)>=1) {
@@ -75,7 +75,6 @@ void DataWriterClient::openClient() {
                 continue;
             }
             // Create an appropriate set command
-            bindStr=bindStr.substr(1,bindStr.length()-2);
             string setCommand = "set " + bindStr + " " + to_string(varValue) + "\r\n";
             bzero(buffer, 1024);
 
@@ -85,10 +84,10 @@ void DataWriterClient::openClient() {
 
             // Send message to the server
             send(sockfd, buffer, strlen(buffer),0);
-
-            read(sockfd, buffer, strlen(buffer));
-            cout<<buffer<<endl;
-//            pthread_mutex_unlock(&this->mutex);
+            char readerBuf[1024];
+//            read(sockfd, readerBuf, strlen(buffer));
+//            cout<<readerBuf<<endl;
+            pthread_mutex_unlock(&this->mutex);
         }
     }
 }
