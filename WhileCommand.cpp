@@ -46,28 +46,29 @@ void WhileCommand::doCommand() {
         Command *command;
         int bracesCounter = 0;
         do {
-            if (this->dataCommands->getSeparated().at(index).find('{') != string::npos) {
+            string currentComStr=this->dataCommands->getSeparated().at(index);
+            if (currentComStr.find('{') != string::npos) {
                 bracesCounter++;
                 index++;
                 it1++;
                 // set the new index of dataCommands
                 this->dataCommands->setIndex(index);
                 continue;
-            } else if (this->dataCommands->getSeparated().at(index).find('}') != string::npos) {
+            } else if (currentComStr.find('}') != string::npos) {
                 bracesCounter--;
                 index++;
                 // set the new index of dataCommands
                 this->dataCommands->setIndex(index);
                 continue;
             }
-            auto it2 = stringsToCommands.find(*it1);
-            if (it2 == stringsToCommands.end()) {
+            if(stringsToCommands.count(*it1)>=1) {
+                command = stringsToCommands.at(*it1);
+                command->doCommand();
+            }
+            else{
                 it1++;
                 continue;
             }
-
-            command = it2->second;
-            command->doCommand();
 
             index = this->dataCommands->getIndex();
             it1 = this->dataCommands->getSeparated().begin();
