@@ -35,9 +35,13 @@ starter = 1
 autostart = 1
 rudder = -1
 print "engine is warming..."
-while rpm <= 750 {
+while rpm <= 550 {
+print "before sleep in while"
 sleep 1000
+print "after sleep in while"
+print rpm
 }
+print "sleep out"
 sleep 5000
 print "let's fly"
 var h0 = heading

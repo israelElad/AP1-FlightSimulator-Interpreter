@@ -40,13 +40,13 @@ void WhileCommand::doCommand() {
         index = oldIndex;
         // set the new index of dataCommands
         this->dataCommands->setIndex(oldIndex);
-
-        auto it1 = this->dataCommands->getSeparated().begin();
+        vector<string> separetedCopy=this->dataCommands->getSeparated();
+        auto it1 = separetedCopy.begin();
         it1 += index;
         Command *command;
         int bracesCounter = 0;
         do {
-            string currentComStr=this->dataCommands->getSeparated().at(index);
+            string currentComStr=separetedCopy.at(index);
             if (currentComStr.find('{') != string::npos) {
                 bracesCounter++;
                 index++;
@@ -71,7 +71,7 @@ void WhileCommand::doCommand() {
             }
 
             index = this->dataCommands->getIndex();
-            it1 = this->dataCommands->getSeparated().begin();
+            it1 = separetedCopy.begin();
             it1 += index;
 
         } while (bracesCounter != 0);
