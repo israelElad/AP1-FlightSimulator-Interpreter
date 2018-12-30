@@ -86,7 +86,7 @@ void DataWriterClient::openClient() {
             // Send message to the server
             send(sockfd, buffer, strlen(buffer),0);
 
-//            read(sockfd, buffer, strlen(buffer));
+            read(sockfd, buffer, strlen(buffer));
 //            cout<<buffer<<endl;
 //            pthread_mutex_unlock(&this->mutex);
         }

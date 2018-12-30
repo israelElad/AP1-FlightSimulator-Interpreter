@@ -18,7 +18,8 @@ void BindCommand::doCommand() {
     unsigned long indexOfVarName = this->dataCommands->getIndex() - 2;
     // get the varName from the vector in dataCommands
     string varName = this->dataCommands->getSeparated().at(indexOfVarName);
-    // add to the varToNameInSimulator map
+    // add to the varToNameInSimulator map without ' " '
+    nameInSimulator=nameInSimulator.substr(1,nameInSimulator.length()-2);
     this->dataBinds->addNewBind(nameInSimulator, varName);
     // set the new index of dataCommands
     this->dataCommands->setIndex(index);

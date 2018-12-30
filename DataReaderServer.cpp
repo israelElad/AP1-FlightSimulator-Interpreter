@@ -98,12 +98,11 @@ void DataReaderServer::openServer() {
         // Replaces any vector name found on the Bind map in the name of Var
         auto itXml1 = xmlVariables.begin();
         while (itXml1 != xmlVariables.end()) {
-            auto itBinds = this->dataBinds->getVarToNameInSimulator().find(*itXml1);
-            if (itBinds == this->dataBinds->getVarToNameInSimulator().end()) {
-                itXml1++;
-                continue;
+            for (auto &itBinds : this->dataBinds->getVarToNameInSimulator()) {
+                if (itBinds.second == *itXml1) {
+                    *itXml1 = itBinds.first;
+                }
             }
-            *itXml1 = itBinds->second;
             itXml1++;
         }
         pthread_mutex_lock(&this->mutex);
@@ -111,13 +110,9 @@ void DataReaderServer::openServer() {
         auto itXml2 = xmlVariables.begin();
         auto itValues = dataValues.begin();
         while (itXml2 != xmlVariables.end()) {
-            auto itSymbolTable = this->dataVars->getSymbolTable().find(*itXml2);
-            if (itSymbolTable == this->dataVars->getSymbolTable().end()) {
-                itXml2++;
-                itValues++;
-                continue;
+            if(this->dataVars->getSymbolTable().count(*itXml2)>=1){
+                this->dataVars->setSymbolTableValue(*itXml2, *itValues);
             }
-            this->dataVars->setSymbolTableValue(itSymbolTable->first, *itValues);
             itXml2++;
             itValues++;
         }
