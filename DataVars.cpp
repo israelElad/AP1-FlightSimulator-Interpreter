@@ -18,6 +18,8 @@ unordered_map<string, double> DataVars::getSymbolTable() {
 }
 
 vector<string> DataVars::getLastChanged() {
+    for (auto const& c : this->lastChanged)
+        std::cout << c << ' ';
     return this->lastChanged;
 }
 
