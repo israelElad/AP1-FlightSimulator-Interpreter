@@ -19,8 +19,7 @@ DataWriterClient::DataWriterClient(string &ip, int &port, DataBinds *dataBinds, 
 }
 
 void DataWriterClient::openClient() {
-    cout << "openning client" << endl;
-    int sockfd, portno, n;
+    int sockfd, portno;
     struct sockaddr_in serv_addr{};
     struct hostent *server;
     char buffer[1024];
@@ -32,7 +31,10 @@ void DataWriterClient::openClient() {
         perror("ERROR opening socket");
         return;
     }
-    server = gethostbyname(this->ip.c_str());
+    char buffer_ip[26];
+    strcpy(buffer_ip, ip.c_str());
+    server = gethostbyname(buffer_ip);
+
     if (server == nullptr) {
         fprintf(stderr, "ERROR, no such host\n");
         return;
@@ -65,7 +67,7 @@ void DataWriterClient::openClient() {
         if (this->dataBinds->getVarToNameInSimulator().count(varName) >= 1) {
             varValue = this->dataVars->getSymbolTable().at(varName);
         } else {
-            cout << "error" << endl;
+            continue;
         }
         // Find the name of the var according to how it appears in the simulator
         string bindStr;
@@ -74,7 +76,6 @@ void DataWriterClient::openClient() {
         }
         //local variable- not found in binds
         if (bindStr.empty()) {
-            cout << "bindStr empty" << endl;
             continue;
         }
         // Create an appropriate set command

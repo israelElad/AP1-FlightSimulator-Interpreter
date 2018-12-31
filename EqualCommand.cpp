@@ -28,11 +28,8 @@ void EqualCommand::doCommand() {
             throw "This var has not been declared before";
         }
         this->dataVars->setSymbolTableValue(varName, varValue);
-
         // update isChanged and lastChanged
         this->dataVars->addLastChanged(varName);
-//        sleep(1);
-
         index = index + 2;
         // set the new index of dataCommands
         this->dataCommands->setIndex(index);

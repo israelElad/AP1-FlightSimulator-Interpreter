@@ -73,7 +73,6 @@ void IfCommand::doCommand() {
             it1 += index;
 
         } while (bracesCounter != 0);
-//        conditionParser = new ConditionParser(left, oper, right, this->dataVars);
     } else {
         //index++ until we get to the }
         while (this->dataCommands->getSeparated().at(index).find('}')==string::npos){

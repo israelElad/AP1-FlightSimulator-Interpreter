@@ -4,6 +4,7 @@
 
 #include "ExpressionUtils.h"
 
+using namespace std;
 
 /**
  * calculate infix string by converting it to prefix using dijkstra’s shunting yard variant,
@@ -25,11 +26,33 @@ int ExpressionUtils::precedence(const string &op) {
     return 0;
 }
 
+void ExpressionUtils::treatNegBracesAndSpaces(string &infix){
+    //delete spaces
+    std::string::iterator end_pos = std::remove(infix.begin(), infix.end(), ' ');
+    infix.erase(end_pos, infix.end());
+    string toSearch="-(";
+    string replaceStr="-1*(";
+    // Get the first occurrence
+    size_t pos = infix.find(toSearch);
+
+    // Repeat till end is reached
+    while( pos != std::string::npos)
+    {
+        // Replace this occurrence of Sub String
+        infix.replace(pos, toSearch.size(), replaceStr);
+        // Get the next occurrence from the current position
+        pos =infix.find(toSearch, pos + toSearch.size());
+    }
+}
+
+
 /**
  * converts infix string to prefix using dijkstra’s shunting yard variant.
  */
-queue<string> ExpressionUtils::infixToPrefixQueue(const string &infix) {
+queue<string> ExpressionUtils::infixToPrefixQueue(const string &infixToChange) {
 
+    //string copy
+    string infix=infixToChange;
     // stack to store operators.
     stack<string> stackOp;
 
@@ -39,6 +62,8 @@ queue<string> ExpressionUtils::infixToPrefixQueue(const string &infix) {
     bool flagOp = true;
     bool isNeg = false;
 
+    treatNegBracesAndSpaces(infix);
+
     for (int i = 0; i < infix.length(); i++) {
         // whitespace- skip.
         if (isspace(infix[i]))
@@ -46,10 +71,13 @@ queue<string> ExpressionUtils::infixToPrefixQueue(const string &infix) {
 
             //opening brace - push to stack
         else if (infix[i] == '(') {
+            //negative braces are taken care of in treatNegBraces method
+            isNeg=false;
+            flagOp=true;
             stackOp.push(string(1, infix[i]));
         }
 
-            // push numbers to the values queue
+            // number-push to the values queue
         else if (isdigit(infix[i])) {
             string valStr;
             if (isNeg) {
@@ -104,10 +132,10 @@ queue<string> ExpressionUtils::infixToPrefixQueue(const string &infix) {
                     isNeg = true;
                     continue;
                 }
-//                if(flagBrace){
-//
-//                }
-
+            }if (infix[i] == '+') { //redundant
+                if(flagOp){
+                    continue;
+                }
             }
             flagOp = true;
             //while the top of operators stack has equal or greater precedence than the current token(operator)

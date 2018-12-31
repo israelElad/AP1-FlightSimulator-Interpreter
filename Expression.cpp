@@ -46,7 +46,6 @@ double Var::calculate(unordered_map<string, double> assignment) {
     if (assignment.find(this->var) != assignment.end()) { //found in map
         return assignment.at(this->var);
     } else {
-        cout<<"The expression contains a variable which is not in the assignment!"+var<<endl;
         throw "The expression contains a variable which is not in the assignment!";
     }
 }
@@ -55,7 +54,6 @@ double Var::calculate(unordered_map<string, double> assignment) {
  * A convenience method. Like the `evaluate(assignment)` method above, but uses an empty assignment.
  */
 double Var::calculate() {
-    cout<<"The expression contains a variable which is not in the assignment!!!"+var<<endl;
     throw "The expression contains a variable which is not in the assignment!!!";
 }
 

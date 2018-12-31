@@ -12,8 +12,6 @@ class ExpressionUtils {
     vector<Expression*> deathMap;
 public:
 
-//    void simplify(string &infixCpy);
-
     /**
      * calculate infix string by converting it to prefix using dijkstra’s shunting yard variant,
      * then converts that to a complex expression, calculates it, and return the result.
@@ -28,6 +26,9 @@ public:
      * converts infix string to prefix using dijkstra’s shunting yard variant.
      */
     queue<string> infixToPrefixQueue(const string &infix);
+
+    void treatNegBracesAndSpaces(string &infix);
+
 
     /**
      * converts queue of strings(as prefix) to a complex Expression.

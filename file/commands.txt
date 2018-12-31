@@ -19,7 +19,6 @@ sleep 500
 var h0 = heading
 breaks = 0
 throttle = 1
-print "alt"
 while alt < 1000 {
     rudder = (h0 - heading) / 180
     print rudder

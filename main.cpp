@@ -1,3 +1,11 @@
+/******************************************
+* Simulator project- first milestone
+* Elad Israel
+* 313448888
+* Narkis Shallev Kermizi
+* 205832447
+******************************************/
+
 #include <string>
 #include <fstream>
 #include <vector>
@@ -36,6 +44,8 @@ int main(int argc, char *argv[]) {
             separated.insert(separated.end(), tmpV.begin(), tmpV.end());
             getline(file, buffer);
         }
+        vector<string> tmpV = lexer(buffer);
+        separated.insert(separated.end(), tmpV.begin(), tmpV.end());
         file.close();
 
     } else if (argc == 1) { // from users input
@@ -158,9 +168,6 @@ void parse(vector<string> &separated, bool &shouldStop) {
             it1 += dataCommands->getIndex();
             continue;
         }
-//        if(*it1=="="){
-//            sleep(3);
-//        }
         it1++;
     }
 }

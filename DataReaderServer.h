@@ -8,7 +8,6 @@ class DataReaderServer {
 private:
     int port;
     int perSec;
-//    int socketFd;
     DataBinds *dataBinds;
     DataVars *dataVars;
     pthread_mutex_t mutex;
