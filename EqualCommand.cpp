@@ -10,7 +10,7 @@ EqualCommand::EqualCommand(DataCommands *dataCommands, DataVars *dataVars) {
 }
 
 void EqualCommand::doCommand() {
-    // get index from dataCommands
+    // get the index from dataCommands
     unsigned long index = this->dataCommands->getIndex();
     // skip the =
     index++;

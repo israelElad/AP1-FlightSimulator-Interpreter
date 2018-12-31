@@ -36,8 +36,13 @@ void OpenDataServerCommand::doCommand() {
     // create a struct of the thread params
     struct Params *params;
     params = new Params();
+    this->deathMap2.push_back(params);
+
+    DataReaderServer* temp;
+    temp = new DataReaderServer(port, perSec, this->dataBinds, this->dataVars, this->mutex);
     // put values into the params
-    params->dataReaderServer = new DataReaderServer(port, perSec, this->dataBinds, this->dataVars, this->mutex);
+    params->dataReaderServer = temp;
+    this->deathMap1.push_back(temp);
 
     pthread_t tId;
     // Launch a thread

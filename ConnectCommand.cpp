@@ -35,8 +35,13 @@ void ConnectCommand::doCommand() {
     // create a struct of the thread params
     struct Params *params;
     params = new Params();
+    this->deathMap2.push_back(params);
+
     // put values into the params
-    params->dataWriterClient = new DataWriterClient(ip, port, this->dataBinds, this->dataVars, this->mutex);
+    DataWriterClient* temp;
+    temp = new DataWriterClient(ip, port, this->dataBinds, this->dataVars, this->mutex);
+    params->dataWriterClient = temp;
+    this->deathMap1.push_back(temp);
 
     pthread_t tId;
     // Launch a thread

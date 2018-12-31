@@ -16,12 +16,28 @@ private:
     struct Params {
         DataWriterClient* dataWriterClient;
     };
+    vector<DataWriterClient*> deathMap1;
+    vector<Params*> deathMap2;
 public:
     explicit ConnectCommand(DataCommands* dataCommands, DataBinds* dataBinds, DataVars* dataVars, pthread_mutex_t &mutex);
 
     virtual void doCommand();
 
     static void *openClient_thread_callback(void *params);
+
+    ~ConnectCommand(){
+        auto it1 = this->deathMap1.begin();
+        while (it1 != this->deathMap1.end()){
+            delete *it1;
+            it1++;
+        }
+        auto it2 = this->deathMap2.begin();
+        while (it2 != this->deathMap2.end()){
+            delete *it2;
+            it2++;
+        }
+        pthread_exit(nullptr);
+    }
 };
 
 

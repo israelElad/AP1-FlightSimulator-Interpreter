@@ -32,6 +32,7 @@ void WhileCommand::doCommand() {
 
     ConditionParser *conditionParser;
     conditionParser = new ConditionParser(left, oper, right, this->dataVars);
+    this->deathMap.push_back(conditionParser);
     unordered_map<string, Command *> stringsToCommands = dataCommands->getStringsToCommands();
     unsigned long oldIndex = index;
     bool isEntered = false;
@@ -76,6 +77,7 @@ void WhileCommand::doCommand() {
 
         } while (bracesCounter != 0);
         conditionParser = new ConditionParser(left, oper, right, this->dataVars);
+        this->deathMap.push_back(conditionParser);
     }
     if (!isEntered) {
         //right now at '{'. index++ until we get to the last '}'

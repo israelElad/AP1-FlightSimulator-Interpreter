@@ -29,6 +29,8 @@ void IfCommand::doCommand() {
 
     ConditionParser *conditionParser;
     conditionParser = new ConditionParser(left, oper, right, this->dataVars);
+    this->deathMap.push_back(conditionParser);
+
     unordered_map<string, Command *> stringsToCommands = dataCommands->getStringsToCommands();
     unsigned long oldIndex = index;
 

@@ -53,6 +53,9 @@ public:
     /** Returns a new expression in which all occurrences of the variable
      * var are replaced with the provided expression (Does not modify the current expression).**/
     virtual Expression *assign(string var, Expression *expression);
+    ~Plus(){
+
+    }
 };
 
 class Num:public Expression{
@@ -76,6 +79,9 @@ public:
     /** Returns a new expression in which all occurrences of the variable
      * var are replaced with the provided expression (Does not modify the current expression).**/
     virtual Expression *assign(string var, Expression *expression);
+    ~Num(){
+
+    }
 };
 
 class Var:public Expression{
@@ -99,6 +105,9 @@ public:
     /** Returns a new expression in which all occurrences of the variable
      * var are replaced with the provided expression (Does not modify the current expression).**/
     virtual Expression *assign(string var, Expression *expression);
+    ~Var(){
+
+    }
 };
 
 
@@ -123,6 +132,9 @@ public:
     /** Returns a new expression in which all occurrences of the variable
      * var are replaced with the provided expression (Does not modify the current expression).**/
     virtual Expression *assign(string var, Expression *expression);
+    ~Neg(){
+
+    }
 };
 
 
@@ -148,6 +160,9 @@ public:
     /** Returns a new expression in which all occurrences of the variable
      * var are replaced with the provided expression (Does not modify the current expression).**/
     virtual Expression *assign(string var, Expression *expression);
+    ~Minus(){
+
+    }
 };
 
 

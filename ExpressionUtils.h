@@ -9,6 +9,7 @@
 #include "Expression.h"
 
 class ExpressionUtils {
+    vector<Expression*> deathMap;
 public:
 
 //    void simplify(string &infixCpy);
@@ -32,6 +33,14 @@ public:
      * converts queue of strings(as prefix) to a complex Expression.
      */
     Expression *queueToExp(queue<string> &queueValOp);
+
+    ~ExpressionUtils(){
+        auto it = this->deathMap.begin();
+        while (it != this->deathMap.end()){
+            delete *it;
+            it++;
+        }
+    }
 };
 
 #endif //AP3_UTILS_H
