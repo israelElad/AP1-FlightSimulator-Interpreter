@@ -43,5 +43,4 @@ public:
     }
 };
 
-
 #endif //MILESTONE_OPENDATASERVERCOMMAND_H

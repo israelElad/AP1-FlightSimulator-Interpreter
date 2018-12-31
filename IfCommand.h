@@ -26,5 +26,4 @@ public:
     }
 };
 
-
 #endif //AP3_IFCOMMAND_H

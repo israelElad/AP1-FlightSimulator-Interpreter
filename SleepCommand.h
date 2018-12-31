@@ -16,5 +16,4 @@ public:
     virtual void doCommand();
 };
 
-
 #endif //AP3_SLEEPCOMMAND_H

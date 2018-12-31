@@ -17,7 +17,6 @@ private:
 public:
     void openClient();
     DataWriterClient(string &ip, int &port, DataBinds *dataBinds, DataVars *dataVars, pthread_mutex_t &mutex);
-//    ~DataWriterClient();
 
 };
 

@@ -28,5 +28,4 @@ public:
     }
 };
 
-
 #endif //AP3_WHILECOMMAND_H

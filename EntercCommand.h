@@ -13,5 +13,4 @@ public:
     virtual void doCommand();
 };
 
-
 #endif //AP3_ENTERCCOMMAND_H

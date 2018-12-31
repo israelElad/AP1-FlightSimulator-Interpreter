@@ -15,5 +15,4 @@ public:
     virtual void doCommand();
 };
 
-
 #endif //AP3_PRINTCOMMAND_H

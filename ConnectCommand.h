@@ -40,5 +40,4 @@ public:
     }
 };
 
-
 #endif //AP3_CONNECTCOMMAND_H
