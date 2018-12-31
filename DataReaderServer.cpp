@@ -6,8 +6,11 @@
 #include <algorithm>
 #include <sstream>
 #include <iostream>
+#include <cstring>
 #include "DataReaderServer.h"
 #include "DataBinds.h"
+
+using namespace std;
 
 DataReaderServer::DataReaderServer(int &port, int &perSec, DataBinds *dataBinds, DataVars *dataVars, pthread_mutex_t &mutex) {
     this->perSec = perSec;
@@ -75,16 +78,22 @@ void DataReaderServer::openServer() {
                                    "/engines/engine/rpm"};
     string dataFromSimulator;
     while (true) {
-        usleep(100000);
-        // If connection is established then start communicating
-        bzero(buffer, 1024);
-        n = static_cast<int>(read(newSockFd, buffer, 1023));
-        if (n < 0) {
-            perror("ERROR reading from socket");
-            return;
-        }
 
-        printf("Here is the message: %s\n", buffer);
+        char c = 'n';
+        int idx = 0;
+        while (c != '\n')   {
+            n = static_cast<int>(read(newSockFd, &c, 1));
+            if (n < 0) {
+                perror("ERROR reading from socket");
+                return;
+            }   else if (n == 0)    {
+                perror("Socket is closed");
+                return;
+            }
+            buffer[idx++] = c;
+        }
+        buffer[idx] = 0;
+
 
         // put the data in vector
         dataFromSimulator = buffer;
@@ -96,28 +105,26 @@ void DataReaderServer::openServer() {
             dataValues.push_back(temp);
         }
         // Replaces any vector name found on the Bind map in the name of Var
-        auto itXml1 = xmlVariables.begin();
-        while (itXml1 != xmlVariables.end()) {
-            auto itBinds = this->dataBinds->getVarToNameInSimulator().find(*itXml1);
-            if (itBinds == this->dataBinds->getVarToNameInSimulator().end()) {
-                itXml1++;
-                continue;
+        vector<string> xmlVariablesCopy = xmlVariables;
+        auto itXml1 = xmlVariablesCopy.begin();
+        while (itXml1 != xmlVariablesCopy.end()) {
+            for (auto &itBinds : this->dataBinds->getVarToNameInSimulator()) {
+                string bindPath=itBinds.second;
+                bindPath=bindPath.substr(1,bindPath.length()-2);
+                if (strcmp(bindPath.c_str(), (*itXml1).c_str())== 0) {
+                    *itXml1 = itBinds.first;
+                }
             }
-            *itXml1 = itBinds->second;
             itXml1++;
         }
         pthread_mutex_lock(&this->mutex);
         // Updating the symbolTable according to the values ​​received
-        auto itXml2 = xmlVariables.begin();
+        auto itXml2 = xmlVariablesCopy.begin();
         auto itValues = dataValues.begin();
-        while (itXml2 != xmlVariables.end()) {
-            auto itSymbolTable = this->dataVars->getSymbolTable().find(*itXml2);
-            if (itSymbolTable == this->dataVars->getSymbolTable().end()) {
-                itXml2++;
-                itValues++;
-                continue;
+        while (itXml2 != xmlVariablesCopy.end()) {
+            if(this->dataVars->getSymbolTable().count(*itXml2)>=1){
+                this->dataVars->setSymbolTableValue(*itXml2, *itValues);
             }
-            this->dataVars->setSymbolTableValue(itSymbolTable->first, *itValues);
             itXml2++;
             itValues++;
         }

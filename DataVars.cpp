@@ -18,21 +18,21 @@ unordered_map<string, double> DataVars::getSymbolTable() {
 }
 
 vector<string> DataVars::getLastChanged() {
-    for (auto const& c : this->lastChanged)
-        std::cout << c << ' ';
     return this->lastChanged;
 }
 
 void DataVars::addLastChanged(const string &newLastChanged) {
-    isChanged=true;
+    isChanged = true;
     this->lastChanged.push_back(newLastChanged);
 }
 
 void DataVars::deleteFirstElementFromLastChanged() {
-    isChanged=false;
-    if(this->lastChanged.empty()){
-        throw "cannot delete element";
+    if (this->lastChanged.size() == 1) {
+        isChanged = false;
+    } else if (this->lastChanged.empty()) {
+        throw invalid_argument("cannot delete element");
     }
+
     this->lastChanged.erase(this->lastChanged.begin());
 }
 

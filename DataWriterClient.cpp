@@ -9,7 +9,8 @@
 #include "DataVars.h"
 #include "DataBinds.h"
 
-DataWriterClient::DataWriterClient(string &ip, int &port, DataBinds *dataBinds, DataVars *dataVars, pthread_mutex_t &mutex) {
+DataWriterClient::DataWriterClient(string &ip, int &port, DataBinds *dataBinds, DataVars *dataVars,
+                                   pthread_mutex_t &mutex) {
     this->ip = ip;
     this->port = port;
     this->dataBinds = dataBinds;
@@ -18,7 +19,7 @@ DataWriterClient::DataWriterClient(string &ip, int &port, DataBinds *dataBinds, 
 }
 
 void DataWriterClient::openClient() {
-    cout<<"openning client"<<endl;
+    cout << "openning client" << endl;
     int sockfd, portno, n;
     struct sockaddr_in serv_addr{};
     struct hostent *server;
@@ -46,51 +47,42 @@ void DataWriterClient::openClient() {
         perror("ERROR connecting");
         return;
     }
-    cout<<"before if"<<endl;
 
     while (true) {
-        if (this->dataVars->isChanged) {
-            cout<<"entered if"<<endl;
-            string varName = this->dataVars->getLastChanged().at(0);
-            // delete first element
-            this->dataVars->deleteFirstElementFromLastChanged();
-            // lock
-//            pthread_mutex_lock(&this->mutex);
-            // Find the value of the var
-            double varValue=0;
-            if(this->dataBinds->getVarToNameInSimulator().count(varName)>=1) {
-                varValue = this->dataVars->getSymbolTable().at(varName);
-            }
-            else{
-                cout<<"error"<<endl;
-            }
-            // Find the name of the var according to how it appears in the simulator
-            string bindStr;
-            if(this->dataBinds->getVarToNameInSimulator().count(varName)==1){
-                bindStr = this->dataBinds->getVarToNameInSimulator().at(varName);
-            }
-            //local variable- not found in binds
-            if(bindStr.empty()){
-                cout<<"bindStr empty"<<endl;
-                continue;
-            }
-            // Create an appropriate set command
-            bindStr=bindStr.substr(1,bindStr.length()-2);
-            string setCommand = "set " + bindStr + " " + to_string(varValue) + "\r\n";
-            bzero(buffer, 1024);
-
-            strcpy(buffer, setCommand.c_str());
-
-            cout<<buffer<<endl;
-
-            // Send message to the server
-            send(sockfd, buffer, strlen(buffer),0);
-
-//            pthread_mutex_unlock(&this->mutex);
+        while (!dataVars->isChanged) {
+            usleep(5000);
         }
+
+        string varName = this->dataVars->getLastChanged().at(0);
+        // delete first element
+
+        this->dataVars->deleteFirstElementFromLastChanged();
+
+        // lock
+//            pthread_mutex_lock(&this->mutex);
+        // Find the value of the var
+        double varValue = 0;
+        if (this->dataBinds->getVarToNameInSimulator().count(varName) >= 1) {
+            varValue = this->dataVars->getSymbolTable().at(varName);
+        } else {
+            cout << "error" << endl;
+        }
+        // Find the name of the var according to how it appears in the simulator
+        string bindStr;
+        if (this->dataBinds->getVarToNameInSimulator().count(varName) == 1) {
+            bindStr = this->dataBinds->getVarToNameInSimulator().at(varName);
+        }
+        //local variable- not found in binds
+        if (bindStr.empty()) {
+            cout << "bindStr empty" << endl;
+            continue;
+        }
+        // Create an appropriate set command
+        bindStr = bindStr.substr(1, bindStr.length() - 2);
+        string setCommand = "set " + bindStr + " " + to_string(varValue) + " \r\n";
+        bzero(buffer, 1024);
+
+        strcpy(buffer, setCommand.c_str());
+        send(sockfd, buffer, strlen(buffer), 0);
     }
 }
-//
-//DataWriterClient::~DataWriterClient() {
-//    close(sockfd);
-//}
