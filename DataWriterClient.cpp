@@ -60,8 +60,6 @@ void DataWriterClient::openClient() {
 
         this->dataVars->deleteFirstElementFromLastChanged();
 
-        // lock
-//            pthread_mutex_lock(&this->mutex);
         // Find the value of the var
         double varValue = 0;
         if (this->dataBinds->getVarToNameInSimulator().count(varName) >= 1) {

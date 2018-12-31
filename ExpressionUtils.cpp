@@ -64,7 +64,7 @@ queue<string> ExpressionUtils::infixToPrefixQueue(const string &infixToChange) {
 
     treatNegBracesAndSpaces(infix);
 
-    for (int i = 0; i < infix.length(); i++) {
+    for (unsigned int i = 0; i < infix.length(); i++) {
         // whitespace- skip.
         if (isspace(infix[i]))
             continue;

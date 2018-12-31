@@ -1,4 +1,5 @@
 openDataServer 5400 10
+print "Please open simulator, press autostart, then enter any character to begin"
 enterc
 connect 127.0.0.1 5402
 var breaks = bind "/controls/flight/speedbrake"
@@ -24,7 +25,7 @@ while alt < 1000 {
     print rudder
     print roll
     print pitch
-    aileron = roll*-1 / 70
+    aileron = -roll / 70
     elevator = pitch / 50
     sleep 250
 }

@@ -27,6 +27,8 @@ public:
     /** Returns a new expression in which all occurrences of the variable
      * var are replaced with the provided expression (Does not modify the current expression).**/
     virtual Expression *assign(string var, Expression *expression) = 0;
+
+    virtual ~Expression(){};
 };
 
 
@@ -54,7 +56,6 @@ public:
      * var are replaced with the provided expression (Does not modify the current expression).**/
     virtual Expression *assign(string var, Expression *expression);
     ~Plus(){
-
     }
 };
 

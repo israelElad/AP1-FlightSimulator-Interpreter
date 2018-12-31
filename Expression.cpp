@@ -213,4 +213,3 @@ double Mult::calculate() {
 Expression *Mult::assign(string var, Expression *expression) {
     return new Mult(left->assign(var, expression), right->assign(var, expression));
 }
-
