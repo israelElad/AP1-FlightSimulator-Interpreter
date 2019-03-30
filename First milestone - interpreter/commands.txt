@@ -1,0 +1,32 @@
+openDataServer 5400 10
+print "Please open simulator, press autostart, then enter any character to begin"
+enterc
+connect 127.0.0.1 5402
+var breaks = bind "/controls/flight/speedbrake"
+var throttle = bind "/controls/engines/current-engine/throttle"
+var heading = bind "/instrumentation/heading-indicator/indicated-heading-deg"
+var airspeed = bind "/instrumentation/airspeed-indicator/indicated-speed-kt"
+var roll = bind "/instrumentation/attitude-indicator/indicated-roll-deg"
+var pitch = bind "/instrumentation/attitude-indicator/internal-pitch-deg"
+var rudder = bind "/controls/flight/rudder"
+var aileron = bind "/controls/flight/aileron"
+var elevator = bind "/controls/flight/elevator"
+var alt = bind "/instrumentation/altimeter/indicated-altitude-ft"
+var rpm = bind "/engines/engine/rpm"
+while rpm <= 750 {
+    sleep 1000
+}
+sleep 500
+var h0 = heading
+breaks = 0
+throttle = 1
+while alt < 1000 {
+    rudder = (h0 - heading) / 180
+    print rudder
+    print roll
+    print pitch
+    aileron = -roll / 70
+    elevator = pitch / 50
+    sleep 250
+}
+print "done"
