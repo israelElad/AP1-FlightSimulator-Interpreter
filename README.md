@@ -1,14 +1,20 @@
 # AP1-FlightSimulator-Interpreter
 Second year first semester- "Advanced programming 1" course, first milestone- Interpreter: C++
 
+Implementation of an interpreter for the FlightGear simulator (for more details about the FlightGear simulator click [here](https://www.flightgear.org/about/)).<br />
+The program gets a script file that contains various commands. By using a [lexer](https://en.wikipedia.org/wiki/Lexical_analysis), the program splits the script into strings that can be interpreted, and then interprets them by using an [interpreter](https://en.wikipedia.org/wiki/Interpreter_(computing)), with the help of the [Command design pattern](https://en.wikipedia.org/wiki/Command_pattern).<br />
+
+### Example:
 <p float="left">
   <img src="https://user-images.githubusercontent.com/45766976/115225247-894fe880-a116-11eb-9206-1a0b2e2ecdd2.png" width="300">
   <img src="https://user-images.githubusercontent.com/45766976/115225239-87862500-a116-11eb-9ed2-2504696813c3.png" width="300">
   <img src="https://user-images.githubusercontent.com/45766976/115225227-83f29e00-a116-11eb-826a-3b7be488072f.png" width="300">
 </p>
 
-Implementation of an interpreter for the FlightGear simulator (for more details about the FlightGear simulator click [here](https://www.flightgear.org/about/)).<br />
-The program gets a script file that contains various commands. By using a [lexer](https://en.wikipedia.org/wiki/Lexical_analysis), the program splits the script into strings that can be interpreted, and then interprets them by using an [interpreter](https://en.wikipedia.org/wiki/Interpreter_(computing)), with the help of the [Command design pattern](https://en.wikipedia.org/wiki/Command_pattern).<br />
+Interpreting the following commands and sending them to the FlightGear's server will make the plane lift-off and fly as shown in the photos above:
+
+<img src="https://user-images.githubusercontent.com/45766976/115705193-ee087e80-a374-11eb-9543-e8bb0c0ab174.jpg" width="600">
+
 
 ### The project contains the following elements:<br />
 
