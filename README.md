@@ -1,5 +1,5 @@
 # AP1-FlightSimulator-Interpreter
-Second year first semester- "Advanced programming 1" course, first milestone- Interpreter: C++
+Second year first semester- "Advanced programming 1" course, first milestone- Interpreter: C++ 
 
 Implementation of an interpreter for the FlightGear simulator (for more details about the FlightGear simulator click [here](https://www.flightgear.org/about/)).<br />
 The program gets a script file that contains various commands. By using a [lexer](https://en.wikipedia.org/wiki/Lexical_analysis), the program splits the script into strings that can be interpreted, and then interprets them by using an [interpreter](https://en.wikipedia.org/wiki/Interpreter_(computing)), with the help of the [Command design pattern](https://en.wikipedia.org/wiki/Command_pattern).<br />
